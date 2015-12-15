@@ -16,7 +16,7 @@ public class PanelFooter extends JPanel {
 
 	public PanelFooter() throws IOException {
 
-		String strImgPath = "D:/MUM/02 FPP/07 Project/CourseRegistrationProject/src/Template/FooterBackground.jpg";
+		String strImgPath = "C:/07 Project/CourseRegistrationProject/src/Template/FooterBackground.jpg";
 		BufferedImage myPicture = ImageIO.read(new File(strImgPath));
 		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 		

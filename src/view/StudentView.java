@@ -5,20 +5,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.GregorianCalendar;
 
 import javax.swing.*;
 
 import orm.PersonObject;
+import orm.ProfessorObject;
 import orm.StudentObject;
 
 @SuppressWarnings("serial")
 public class StudentView extends JFrame {
 
-	private static PersonObject personObject;
+	private static StudentObject studentObject;
 	
-	public StudentView(PersonObject personObject) throws SQLException, IOException {
-
-		//StudentView.personObject =  new personObject();
+	public StudentView(StudentObject studentObject) throws SQLException, IOException {
+		
+		StudentView.studentObject =  studentObject;
 		setSize(1000, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -77,7 +79,7 @@ public class StudentView extends JFrame {
 		lblLastName.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblLastName);
 
-		JLabel lblGender = new JLabel("Gender:");
+		JLabel lblGender = new JLabel(studentObject.getGender());
 		lblGender.setPreferredSize(new Dimension(300, 35));
 		lblGender.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblGender.setFont(new Font("Courier New", Font.BOLD, 20));
@@ -209,7 +211,14 @@ public class StudentView extends JFrame {
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws SQLException, IOException {
-		StudentView studentView = new StudentView(StudentView.personObject);
+		
+		
+		StudentView.studentObject = new StudentObject("FirstName", "LastName", new GregorianCalendar(2011,1,1));
+		StudentView.studentObject.setID(984946);
+		StudentView.studentObject.setGender("Male");
+		
+
+		StudentView studentView = new StudentView(StudentView.studentObject);
 	}
 
 }

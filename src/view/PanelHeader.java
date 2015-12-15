@@ -16,7 +16,7 @@ public class PanelHeader extends JPanel {
 
 	public PanelHeader() throws IOException {
 
-		String strImgPath = "D:/MUM/02 FPP/07 Project/CourseRegistrationProject/src/Template/HeaderBackground.jpg";
+		String strImgPath = "C:/07 Project/CourseRegistrationProject/src/Template/HeaderBackground.jpg";
 		BufferedImage myPicture = ImageIO.read(new File(strImgPath));
 		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 		
