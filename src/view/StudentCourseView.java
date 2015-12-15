@@ -47,7 +47,7 @@ public class StudentCourseView extends JFrame {
 
 			PanelHeader panelHeader = new PanelHeader();
 			add(panelHeader);
-			
+
 			JPanel panelTopBorder = new JPanel();
 			panelTopBorder.setPreferredSize(new Dimension(1500, 50));
 			add(panelTopBorder);
@@ -56,36 +56,36 @@ public class StudentCourseView extends JFrame {
 			lblSysName.setFont(new Font("Courier New", Font.BOLD, 40));
 			lblSysName.setForeground(Color.LIGHT_GRAY);
 			panelTopBorder.add(lblSysName);
-			
-			
 
-			String tableHeader[] = { "Course Code", "Course Name", "Course Description", "Professor" };
+			String tableHeader[] = { "Course Code", "Course Name", "Course Description", "Professor", "ProfessorID" };
 
-			StudentController courseCtl = new StudentController();
-			ArrayList<ProfessorStudentCourseMetricObject> courseObject = courseCtl.getAllCourse(984946);
+			StudentController studentController = new StudentController();
+			ArrayList<ProfessorStudentCourseMetricObject> courseObject = studentController.getAllCourse(984946);
 
 			// Table model
 			DefaultTableModel tableModel = new DefaultTableModel() {
 
-				boolean[] canEdit = new boolean[] { false, false, false,false };
+				boolean[] canEdit = new boolean[] { false, false, false, false, false };
 
 				public boolean isCellEditable(int rowIndex, int columnIndex) {
 					return canEdit[columnIndex];
 				}
 			};
 
-			for (int j = 0; j < 4; j++) {
+			for (int j = 0; j < 5; j++) {
 				tableModel.addColumn(tableHeader[j]);
 			}
 
-			String[] tableRow = new String[4];
+			String[] tableRow = new String[5];
 			for (int i = 0; i < courseObject.size(); i++) {
 				tableRow[0] = courseObject.get(i).getCourse().getCourseCode();
 				tableRow[1] = courseObject.get(i).getCourse().getCourseName();
 				tableRow[2] = courseObject.get(i).getCourse().getCourseDesc();
 				tableRow[3] = courseObject.get(i).getProfessor().getFirstName() + " "
 						+ courseObject.get(i).getProfessor().getLastName();
+				tableRow[4] = Integer.toString(courseObject.get(i).getProfessor().getID());
 				tableModel.addRow(tableRow);
+
 			}
 
 			JTable courseTable = new JTable(tableModel);
@@ -116,12 +116,12 @@ public class StudentCourseView extends JFrame {
 
 			JPanel tablePanel = new JPanel();
 			tablePanel.add(coursePanel);// add table to a
-															// panel
+										// panel
 
 			JPanel buttonPanel = new JPanel();
 			buttonPanel.setPreferredSize(new Dimension(800, 50));
 			buttonPanel.setLayout(new FlowLayout());
-//			((FlowLayout) buttonPanel.getLayout()).setHgap(30);
+			// ((FlowLayout) buttonPanel.getLayout()).setHgap(30);
 
 			JButton buttonSubmit = new JButton("Submit");
 			JButton buttonBack = new JButton("Back");
@@ -129,8 +129,7 @@ public class StudentCourseView extends JFrame {
 			buttonBack.setPreferredSize(new Dimension(150, 40));
 			buttonPanel.add(buttonSubmit);
 			buttonPanel.add(buttonBack);
-			
-			
+
 			add(tablePanel);
 			add(buttonPanel);
 			PanelFooter panelFooter = new PanelFooter();
@@ -143,11 +142,11 @@ public class StudentCourseView extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// For testing first
-					StudentObject studentObject = new StudentObject("FirstName", "LastName", new GregorianCalendar(1990,1,1));
+					StudentObject studentObject = new StudentObject("FirstName", "LastName",
+							new GregorianCalendar(1990, 1, 1));
 					studentObject.setID(984946);
 					studentObject.setGender("Male");
 					studentObject.setNationality("Vietnamese");
-
 
 					try {
 						new StudentView(studentObject);
@@ -172,9 +171,11 @@ public class StudentCourseView extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (courseTable.getSelectedRow() != -1) {
 						String courseCode = (String) courseTable.getValueAt(courseTable.getSelectedRow(), 0);
+						Integer professorID = Integer.valueOf((String) courseTable.getValueAt(courseTable.getSelectedRow(), 4));
+//						System.out.println(professorID);
 						int studentID = 984946;
 						try {
-							courseCtl.saveCourse(studentID, courseCode);
+							studentController.saveCourse(studentID, courseCode,professorID);
 						} catch (SQLException e1) {
 							e1.printStackTrace();
 						}

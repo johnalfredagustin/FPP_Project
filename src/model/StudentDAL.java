@@ -131,9 +131,9 @@ public class StudentDAL {
 		}
 	}
 	
-	public void saveCourse(int studentID, String courseCode) throws SQLException {
+	public void saveCourse(int studentID, String courseCode, int professorID) throws SQLException {
 
-		sqlComm = "EXEC dbo.spSave_SelectedCourseForStudent " +studentID +" "+ courseCode;
+		sqlComm = "EXEC dbo.spInsert_RegisterCourseStudent " +studentID +" "+ courseCode+ " "+professorID;
 
 		try {
 			statement = sqlConn.createStatement();
