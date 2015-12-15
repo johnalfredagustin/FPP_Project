@@ -63,7 +63,7 @@ public class StudentCourseView extends JFrame {
 			// Table model
 			DefaultTableModel tableModel = new DefaultTableModel() {
 
-				boolean[] canEdit = new boolean[] { false, false, false };
+				boolean[] canEdit = new boolean[] { false, false, false,false };
 
 				public boolean isCellEditable(int rowIndex, int columnIndex) {
 					return canEdit[columnIndex];
@@ -116,8 +116,8 @@ public class StudentCourseView extends JFrame {
 
 			JPanel buttonPanel = new JPanel();
 			buttonPanel.setPreferredSize(new Dimension(100, 50));
-			buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-			((FlowLayout) buttonPanel.getLayout()).setHgap(30);
+			buttonPanel.setLayout(new FlowLayout());
+//			((FlowLayout) buttonPanel.getLayout()).setHgap(30);
 
 			JButton buttonSubmit = new JButton("Submit");
 			JButton buttonBack = new JButton("Back");
