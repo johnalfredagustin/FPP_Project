@@ -82,7 +82,7 @@ public class ProfessorDAL {
 		}
 	}
 
-	@SuppressWarnings("finally")
+//	@SuppressWarnings("finally")
 	public ArrayList<ProfessorStudentCourseMetricObject> getAllStudentCourseDetail(int professorID)
 			throws SQLException {
 
