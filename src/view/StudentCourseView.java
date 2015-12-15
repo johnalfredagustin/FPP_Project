@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -38,18 +37,23 @@ public class StudentCourseView extends JFrame {
 		try {
 			setSize(1000, 1000);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setLayout(new BorderLayout());
+			setExtendedState(JFrame.MAXIMIZED_BOTH);
+			setTitle("Course Registration System > ALL AVAILABLE COURSES");
+			setLayout(new FlowLayout(FlowLayout.LEFT));
 
-			JPanel labelPanel = new JPanel();
-			labelPanel.setPreferredSize(new Dimension(250, 200));
-			labelPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+			PanelHeader panelHeader = new PanelHeader();
+			add(panelHeader);
+			
+			JPanel panelTopBorder = new JPanel();
+			panelTopBorder.setPreferredSize(new Dimension(1500, 50));
+			add(panelTopBorder);
 
-			JLabel titleLabel = new JLabel("ALL AVAILABLE COURSES");
-			titleLabel.setFont(new Font("Courier New", Font.BOLD, 30));
-			titleLabel.setForeground(Color.LIGHT_GRAY);
-
-			labelPanel.add(titleLabel);
-			add(labelPanel, BorderLayout.NORTH);
+			JLabel lblSysName = new JLabel("Course Registration System");
+			lblSysName.setFont(new Font("Courier New", Font.BOLD, 40));
+			lblSysName.setForeground(Color.LIGHT_GRAY);
+			panelTopBorder.add(lblSysName);
+			
+			
 
 			String tableHeader[] = { "Course Code", "Course Name", "Course Description", "Professor" };
 
@@ -107,12 +111,12 @@ public class StudentCourseView extends JFrame {
 			coursePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
 			JPanel tablePanel = new JPanel();
-			tablePanel.add(coursePanel, BorderLayout.NORTH);// add table to a
+			tablePanel.add(coursePanel);// add table to a
 															// panel
 
 			JPanel buttonPanel = new JPanel();
 			buttonPanel.setPreferredSize(new Dimension(100, 50));
-			buttonPanel.setLayout(new FlowLayout());
+			buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 			((FlowLayout) buttonPanel.getLayout()).setHgap(30);
 
 			JButton buttonSubmit = new JButton("Submit");
@@ -121,9 +125,12 @@ public class StudentCourseView extends JFrame {
 			buttonBack.setPreferredSize(new Dimension(150, 50));
 			buttonPanel.add(buttonSubmit);
 			buttonPanel.add(buttonBack);
-
-			add(buttonPanel, BorderLayout.SOUTH);
-			add(tablePanel, BorderLayout.CENTER); // add panel to frame
+			
+			add(buttonPanel);
+			add(tablePanel);
+			
+			PanelFooter panelFooter = new PanelFooter();
+			add(panelFooter);
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
 			setVisible(true);
 
