@@ -7,8 +7,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -31,6 +33,7 @@ import controller.StudentController;
 import orm.CourseObject;
 //import orm.StudentObject;
 import orm.ProfessorStudentCourseMetricObject;
+import orm.StudentObject;
 
 public class StudentCourseView extends JFrame {
 
@@ -139,6 +142,24 @@ public class StudentCourseView extends JFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					// For testing first
+					StudentObject studentObject = new StudentObject("FirstName", "LastName", new GregorianCalendar(1990,1,1));
+					studentObject.setID(984946);
+					studentObject.setGender("Male");
+					studentObject.setNationality("Vietnamese");
+
+
+					try {
+						new StudentView(studentObject);
+						setVisible(false);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					// =================================
 					// new StudentView();
 					// setVisible(false);
 

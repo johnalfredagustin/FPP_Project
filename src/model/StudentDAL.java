@@ -137,11 +137,10 @@ public class StudentDAL {
 
 		try {
 			statement = sqlConn.createStatement();
-			resultSet = statement.executeQuery(sqlComm);
+			statement.executeQuery(sqlComm);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			resultSet.close();
 			statement.close();
 			sqlConn.close();
 		}
