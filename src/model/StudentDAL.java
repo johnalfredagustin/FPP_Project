@@ -130,5 +130,21 @@ public class StudentDAL {
 			return profStudCourse;
 		}
 	}
+	
+	public void saveCourse(int studentID, String courseCode) throws SQLException {
+
+		sqlComm = "EXEC dbo.spSave_SelectedCourseForStudent " +studentID +" "+ courseCode;
+
+		try {
+			statement = sqlConn.createStatement();
+			resultSet = statement.executeQuery(sqlComm);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			resultSet.close();
+			statement.close();
+			sqlConn.close();
+		}
+	}
 
 }

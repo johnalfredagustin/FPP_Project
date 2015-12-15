@@ -1,7 +1,10 @@
 package controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import model.StudentDAL;
+import orm.CourseObject;
 import orm.StudentObject;
 
 public class StudentController {
@@ -15,5 +18,13 @@ public class StudentController {
 	
 	public boolean signUp(StudentObject studentObj) throws SQLException {
 		return studentDAL.signup(studentObj);
+	}
+	
+//	public ArrayList<CourseObject> getAllCourse(int studentID) throws SQLException {
+//		return studentDAL.getAllCourse(studentID);
+//	}
+	
+	public void saveCourse(int studentID, String courseCode) throws SQLException {
+		studentDAL.saveCourse(studentID, courseCode);
 	}
 }
