@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import model.StudentDAL;
 import orm.CourseObject;
+import orm.ProfessorStudentCourseMetricObject;
 import orm.StudentObject;
 
 public class StudentController {
@@ -20,9 +21,9 @@ public class StudentController {
 		return studentDAL.signup(studentObj);
 	}
 	
-//	public ArrayList<CourseObject> getAllCourse(int studentID) throws SQLException {
-//		return studentDAL.getAllCourse(studentID);
-//	}
+	public ArrayList<ProfessorStudentCourseMetricObject> getAllCourse(int studentID) throws SQLException {
+		return studentDAL.getAllCourse(studentID);
+	}
 	
 	public void saveCourse(int studentID, String courseCode) throws SQLException {
 		studentDAL.saveCourse(studentID, courseCode);

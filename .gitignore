@@ -1,1 +1,4 @@
 src/utility/ConnectionUtility.java
+src/Template
+src/view/PanelFooter.java
+src/view/PanelHeader.java

@@ -30,6 +30,7 @@ import javax.swing.table.TableColumn;
 import controller.StudentController;
 import orm.CourseObject;
 //import orm.StudentObject;
+import orm.ProfessorStudentCourseMetricObject;
 
 public class StudentCourseView extends JFrame {
 
@@ -57,7 +58,7 @@ public class StudentCourseView extends JFrame {
 			String tableHeader[] = { "Course Code", "Course Name", "Course Description", "Professor" };
 
 			StudentController courseCtl = new StudentController();
-//			ArrayList<CourseObject> courseObject = courseCtl.getAllCourse(984946);
+			ArrayList<ProfessorStudentCourseMetricObject> courseObject = courseCtl.getAllCourse(984946);
 
 			// Table model
 			DefaultTableModel tableModel = new DefaultTableModel() {
@@ -74,13 +75,14 @@ public class StudentCourseView extends JFrame {
 			}
 
 			String[] tableRow = new String[4];
-//			for (int i = 0; i < courseObject.size(); i++) {
-//				tableRow[0] = courseObject.get(i).getCourseCode();
-//				tableRow[1] = courseObject.get(i).getCourseName();
-//				tableRow[2] = courseObject.get(i).getCourseDesc();
-//				tableRow[3] = courseObject.get(i).getProfessorName();
-//				tableModel.addRow(tableRow);
-//			}
+			for (int i = 0; i < courseObject.size(); i++) {
+				tableRow[0] = courseObject.get(i).getCourse().getCourseCode();
+				tableRow[1] = courseObject.get(i).getCourse().getCourseName();
+				tableRow[2] = courseObject.get(i).getCourse().getCourseDesc();
+				tableRow[3] = courseObject.get(i).getProfessor().getFirstName() + " "
+						+ courseObject.get(i).getProfessor().getLastName();
+				tableModel.addRow(tableRow);
+			}
 
 			JTable courseTable = new JTable(tableModel);
 
@@ -133,8 +135,8 @@ public class StudentCourseView extends JFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-//					new StudentView();
-//					setVisible(false);
+					// new StudentView();
+					// setVisible(false);
 
 				}
 			});
@@ -147,7 +149,7 @@ public class StudentCourseView extends JFrame {
 						String courseCode = (String) courseTable.getValueAt(courseTable.getSelectedRow(), 0);
 						int studentID = 984946;
 						try {
-							courseCtl.saveCourse(studentID,courseCode);
+							courseCtl.saveCourse(studentID, courseCode);
 						} catch (SQLException e1) {
 							e1.printStackTrace();
 						}
