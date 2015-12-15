@@ -40,10 +40,6 @@ public class StudentCourseView extends JFrame {
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(new BorderLayout());
 
-			// HeaderView headerTitle = new HeaderView();
-			// JPanel headerPanel = headerTitle.header();
-			// add(headerPanel,BorderLayout.NORTH);
-
 			JPanel labelPanel = new JPanel();
 			labelPanel.setPreferredSize(new Dimension(250, 200));
 			labelPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
