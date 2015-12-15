@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -48,7 +49,7 @@ public class StudentCourseView extends JFrame {
 			panelTopBorder.setPreferredSize(new Dimension(1500, 50));
 			add(panelTopBorder);
 
-			JLabel lblSysName = new JLabel("Course Registration System");
+			JLabel lblSysName = new JLabel("ALL AVAILABLE COURSES");
 			lblSysName.setFont(new Font("Courier New", Font.BOLD, 40));
 			lblSysName.setForeground(Color.LIGHT_GRAY);
 			panelTopBorder.add(lblSysName);
@@ -115,20 +116,20 @@ public class StudentCourseView extends JFrame {
 															// panel
 
 			JPanel buttonPanel = new JPanel();
-			buttonPanel.setPreferredSize(new Dimension(100, 50));
+			buttonPanel.setPreferredSize(new Dimension(800, 50));
 			buttonPanel.setLayout(new FlowLayout());
 //			((FlowLayout) buttonPanel.getLayout()).setHgap(30);
 
 			JButton buttonSubmit = new JButton("Submit");
 			JButton buttonBack = new JButton("Back");
-			buttonSubmit.setPreferredSize(new Dimension(150, 50));
-			buttonBack.setPreferredSize(new Dimension(150, 50));
+			buttonSubmit.setPreferredSize(new Dimension(150, 40));
+			buttonBack.setPreferredSize(new Dimension(150, 40));
 			buttonPanel.add(buttonSubmit);
 			buttonPanel.add(buttonBack);
 			
-			add(buttonPanel);
-			add(tablePanel);
 			
+			add(tablePanel);
+			add(buttonPanel);
 			PanelFooter panelFooter = new PanelFooter();
 			add(panelFooter);
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
