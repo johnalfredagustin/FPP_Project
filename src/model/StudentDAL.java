@@ -133,7 +133,7 @@ public class StudentDAL {
 
 	@SuppressWarnings("finally")
 	public int saveCourse(int studentID, int courseID, int professorID) throws SQLException {
-
+		
 		sqlComm = "EXEC dbo.spInsert_RegisterCourseStudent " + studentID + ", " + courseID + ", " + professorID;
 		int rows = 0;
 		try {
