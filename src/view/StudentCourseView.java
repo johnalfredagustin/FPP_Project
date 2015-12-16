@@ -57,7 +57,7 @@ public class StudentCourseView extends JFrame {
 			lblSysName.setForeground(Color.LIGHT_GRAY);
 			panelTopBorder.add(lblSysName);
 
-			String tableHeader[] = { "Course Code", "Course Name", "Course Description", "Professor", "ProfessorID" };
+			String tableHeader[] = { "CourseID","Course Code", "Course Name", "Course Description", "Professor", "ProfessorID" };
 
 			StudentController studentController = new StudentController();
 			ArrayList<ProfessorStudentCourseMetricObject> courseObject = studentController.getAllCourse(984946);
@@ -65,19 +65,21 @@ public class StudentCourseView extends JFrame {
 			// Table model
 			DefaultTableModel tableModel = new DefaultTableModel() {
 
-				boolean[] canEdit = new boolean[] { false, false, false, false, false };
+				boolean[] canEdit = new boolean[] { false,false, false, false, false, false };
 
 				public boolean isCellEditable(int rowIndex, int columnIndex) {
 					return canEdit[columnIndex];
 				}
 			};
 			JTable courseTable = new JTable(tableModel);
-			for (int j = 0; j < 5; j++) {
+			for (int j = 0; j < 6; j++) {
 				tableModel.addColumn(tableHeader[j]);
 			}
 
 			for (int i = 0; i < courseObject.size(); i++) {
-				tableModel.addRow(new Object[] { courseObject.get(i).getCourse().getCourseCode(),
+				tableModel.addRow(new Object[] { 
+						courseObject.get(i).getCourse().getCourseID(),
+						courseObject.get(i).getCourse().getCourseCode(),
 						courseObject.get(i).getCourse().getCourseName(),
 						courseObject.get(i).getCourse().getCourseDesc(),
 						courseObject.get(i).getProfessor().getFirstName() + " "
@@ -85,7 +87,8 @@ public class StudentCourseView extends JFrame {
 						courseObject.get(i).getProfessor().getID() });
 
 			}
-			courseTable.removeColumn(courseTable.getColumnModel().getColumn(4));
+			courseTable.removeColumn(courseTable.getColumnModel().getColumn(5));
+			courseTable.removeColumn(courseTable.getColumnModel().getColumn(0));
 
 			courseTable.setFont(new Font("Serif", Font.ITALIC, 14));
 			courseTable.setRowHeight(courseTable.getRowHeight() + 10);
@@ -165,11 +168,11 @@ public class StudentCourseView extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (courseTable.getSelectedRow() != -1) {
-						String courseCode = (String) courseTable.getValueAt(courseTable.getSelectedRow(), 0);
-						int professorID = (int) courseTable.getModel().getValueAt(courseTable.getSelectedRow(), 4);
+						int courseID = (int) courseTable.getModel().getValueAt(courseTable.getSelectedRow(), 0);
+						int professorID = (int) courseTable.getModel().getValueAt(courseTable.getSelectedRow(), 5);
 						int studentID = 984946;
 						try {
-							int row = studentController.saveCourse(studentID, courseCode, professorID);
+							int row = studentController.saveCourse(studentID, courseID, professorID);
 							JOptionPane.showMessageDialog(null, row);
 						} catch (SQLException e1) {
 							e1.printStackTrace();

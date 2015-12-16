@@ -95,7 +95,7 @@ public class StudentDAL {
 		try {
 			statement = sqlConn.createStatement();
 			resultSet = statement.executeQuery(sqlComm);
-			
+
 			while (resultSet.next()) {
 
 				String strDOB = resultSet.getDate("DOB").toString();
@@ -130,15 +130,15 @@ public class StudentDAL {
 			return profStudCourse;
 		}
 	}
-	
-	@SuppressWarnings("finally")
-	public int saveCourse(int studentID, String courseCode, int professorID) throws SQLException {
 
-		sqlComm = "EXEC dbo.spInsert_RegisterCourseStudent " +studentID +" "+ courseCode+ " "+professorID;
+	@SuppressWarnings("finally")
+	public int saveCourse(int studentID, int courseID, int professorID) throws SQLException {
+
+		sqlComm = "EXEC dbo.spInsert_RegisterCourseStudent " + studentID + ", " + courseID + ", " + professorID;
 		int rows = 0;
 		try {
 			statement = sqlConn.createStatement();
-			 rows = statement.executeUpdate(sqlComm);
+			rows = statement.executeUpdate(sqlComm);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
