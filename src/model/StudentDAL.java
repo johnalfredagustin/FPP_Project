@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import orm.CourseObject;
@@ -67,12 +68,38 @@ public class StudentDAL {
 	@SuppressWarnings("finally")
 	public boolean signup(StudentObject studentObj) throws SQLException {
 
+		Calendar calendarDOB = studentObj.getDOB();
+
+		int monthDOB = calendarDOB.get(Calendar.MONTH) + 1;
+		int dayDOB = calendarDOB.get(Calendar.DAY_OF_MONTH);
+
+		String strYearDOB = String.valueOf(calendarDOB.get(Calendar.YEAR));
+		String strMonthDOB = monthDOB < 10 ? ("0" + monthDOB).substring(0, 2) : String.valueOf(monthDOB);
+		String strDayDOB = dayDOB < 10 ? ("0" + dayDOB).substring(0, 2) : String.valueOf(dayDOB);
+		String strDateDOB = strYearDOB + "-" + strMonthDOB + "-" + strDayDOB;
+
+		Calendar calendarEntry = studentObj.getEntryDate();
+
+		int monthEntry = calendarEntry.get(Calendar.MONTH) + 1;
+		int dayEntry = calendarEntry.get(Calendar.DAY_OF_MONTH);
+
+		String strYearEntry = String.valueOf(calendarEntry.get(Calendar.YEAR));
+		String strMonthEntry = monthEntry < 10 ? ("0" + monthEntry).substring(0, 2) : String.valueOf(monthEntry);
+		String strDayEntry = dayEntry < 10 ? ("0" + dayEntry).substring(0, 2) : String.valueOf(dayEntry);
+		String strDateEntry = strYearEntry + "-" + strMonthEntry + "-" + strDayEntry;
+
+		
 		int recordCount = 0;
-		sqlComm = "EXEC dbo.spInsert_NewStudentInfo " + studentObj.getID() + ", '" + studentObj.getFirstName() + "', '"
-
-				+ studentObj.getLastName() + "', '" + studentObj.getDOB() + "', '" + studentObj.getGender() + "','"
-				+ studentObj.getNationality() + "',NULL,'" + studentObj.getPassword() + "'";
-
+		sqlComm = "EXEC dbo.spInsert_NewStudentInfo " 
+				+ studentObj.getID() + ", " 
+				+ studentObj.getFirstName() + "', '" 
+				+ studentObj.getLastName() + "', '"
+				+ strDateDOB + "', '" 
+				+ studentObj.getGender() + "', '"
+				+ studentObj.getNationality() + "', '" 
+				+ strDateEntry + "', '"
+				+ studentObj.getEmail() + "', '"
+				+ studentObj.getPassword() + "'";
 		try {
 			statement = sqlConn.createStatement();
 			recordCount = statement.executeUpdate(sqlComm);
@@ -80,10 +107,9 @@ public class StudentDAL {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			resultSet.close();
 			statement.close();
 			sqlConn.close();
-			return recordCount > 0 ? true : false;
+			return recordCount != 0 ? true : false;
 		}
 	}
 

@@ -10,6 +10,7 @@ import javax.swing.*;
 import controller.LoginController;
 import controller.ProfessorController;
 import controller.StudentController;
+import model.Roles;
 import orm.ProfessorObject;
 import orm.StudentObject;
 

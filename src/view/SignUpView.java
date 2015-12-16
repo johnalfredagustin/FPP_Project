@@ -3,52 +3,42 @@ package view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.chrono.Chronology;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import javax.swing.*;
 
-import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import orm.PersonObject;
+import controller.ProfessorController;
+import controller.StudentController;
+import model.Gender;
+import model.Roles;
+import orm.ProfessorObject;
 import orm.StudentObject;
+import utility.DatePickerUtility;
+import utility.ObservingTextFieldUtility;
 
 @SuppressWarnings("serial")
 public class SignUpView extends JFrame {
 
 	public SignUpView() throws SQLException, IOException {
 
-		setSize(1000, 1000);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new FlowLayout(FlowLayout.LEFT));
+		JFrame frame = new JFrame();
+		frame.setSize(1000, 1000);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		PanelHeader panelHeader = new PanelHeader();
-		add(panelHeader);
+		frame.add(panelHeader);
 
 		JLabel lblHeader = new JLabel("Signup for new account.");
 		lblHeader.setFont(new Font("Courier New", Font.BOLD, 40));
 		lblHeader.setPreferredSize(new Dimension(1700, 40));
 		lblHeader.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblHeader.setForeground(Color.LIGHT_GRAY);
-		add(lblHeader);
+		frame.add(lblHeader);
 
 		JPanel panelBody = new JPanel();
 		panelBody.setPreferredSize(new Dimension(1500, 500));
@@ -64,135 +54,196 @@ public class SignUpView extends JFrame {
 
 		panelBody.add(panelLeft);
 		panelBody.add(panelRight);
-		add(panelBody);
+		frame.add(panelBody);
 
 		JLabel lblSpace = new JLabel("Account Type:");
-		lblSpace.setPreferredSize(new Dimension(300, 35));
+		lblSpace.setPreferredSize(new Dimension(300, 30));
 		lblSpace.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSpace.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblSpace.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblSpace);
 
 		JLabel lblStudentID = new JLabel("ID:");
-		lblStudentID.setPreferredSize(new Dimension(300, 35));
+		lblStudentID.setPreferredSize(new Dimension(300, 30));
 		lblStudentID.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblStudentID.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblStudentID.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblStudentID);
 
+		JLabel lblSSN = new JLabel("SSN:");
+		lblSSN.setPreferredSize(new Dimension(300, 30));
+		lblSSN.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSSN.setFont(new Font("Courier New", Font.BOLD, 20));
+		lblSSN.setForeground(Color.DARK_GRAY);
+		// lblSSN.setVisible(false);
+		panelLeft.add(lblSSN);
+
 		JLabel lblFirstName = new JLabel("First Name:");
-		lblFirstName.setPreferredSize(new Dimension(300, 40));
+		lblFirstName.setPreferredSize(new Dimension(300, 30));
 		lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFirstName.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblFirstName.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblFirstName);
 
 		JLabel lblLastName = new JLabel("Last Name:");
-		lblLastName.setPreferredSize(new Dimension(300, 35));
+		lblLastName.setPreferredSize(new Dimension(300, 30));
 		lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblLastName.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblLastName.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblLastName);
 
 		JLabel lblGender = new JLabel("Gender:");
-		lblGender.setPreferredSize(new Dimension(300, 35));
+		lblGender.setPreferredSize(new Dimension(300, 30));
 		lblGender.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblGender.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblGender.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblGender);
 
 		JLabel lblDOB = new JLabel("Date Of Birth:");
-		lblDOB.setPreferredSize(new Dimension(300, 35));
+		lblDOB.setPreferredSize(new Dimension(300, 30));
 		lblDOB.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblDOB.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblDOB.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblDOB);
 
 		JLabel lblNationality = new JLabel("Nationality:");
-		lblNationality.setPreferredSize(new Dimension(300, 35));
+		lblNationality.setPreferredSize(new Dimension(300, 30));
 		lblNationality.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNationality.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblNationality.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblNationality);
 
+		JLabel lblEmail = new JLabel("Email Address:");
+		lblEmail.setPreferredSize(new Dimension(300, 30));
+		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblEmail.setFont(new Font("Courier New", Font.BOLD, 20));
+		lblEmail.setForeground(Color.DARK_GRAY);
+		panelLeft.add(lblEmail);
+
 		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setPreferredSize(new Dimension(300, 35));
+		lblPassword.setPreferredSize(new Dimension(300, 30));
 		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPassword.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblPassword.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblPassword);
 
 		JLabel lblConfirmPassword = new JLabel("Confirm Password:");
-		lblConfirmPassword.setPreferredSize(new Dimension(300, 35));
+		lblConfirmPassword.setPreferredSize(new Dimension(300, 30));
 		lblConfirmPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblConfirmPassword.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblConfirmPassword.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblConfirmPassword);
 
-		JComboBox<String> combo = new JComboBox<String>();
-		combo.setFont(new Font("Courier New", Font.BOLD, 20));
-		combo.setPreferredSize(new Dimension(220, 35));
-		combo.setForeground(Color.DARK_GRAY);
-		combo.addItem("");
+		JComboBox<String> comboRole = new JComboBox<String>();
+		comboRole.setFont(new Font("Courier New", Font.BOLD, 20));
+		comboRole.setPreferredSize(new Dimension(220, 30));
+		comboRole.setForeground(Color.DARK_GRAY);
+		comboRole.addItem("");
 		for (Roles role : Roles.values()) {
-			combo.addItem(role.toString());
+			comboRole.addItem(role.toString());
 		}
 
-		panelRight.add(combo);
+		panelRight.add(comboRole);
 
 		JTextField txtID = new JTextField();
-		txtID.setPreferredSize(new Dimension(220, 35));
+		txtID.setPreferredSize(new Dimension(220, 30));
 		txtID.setHorizontalAlignment(SwingConstants.LEFT);
 		txtID.setFont(new Font("Courier New", Font.BOLD, 20));
 		panelRight.add(txtID);
 
+		JTextField txtSSN = new JTextField();
+		txtSSN.setPreferredSize(new Dimension(220, 30));
+		txtSSN.setHorizontalAlignment(SwingConstants.LEFT);
+		txtSSN.setFont(new Font("Courier New", Font.BOLD, 20));
+		// txtSSN.setVisible(false);
+		panelRight.add(txtSSN);
+
+		// comboRole.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// txtSSN.setVisible(true);
+		// lblSSN.setVisible(false);
+		//
+		// }
+		// });
+
 		JTextField txtFirstName = new JTextField();
-		txtFirstName.setPreferredSize(new Dimension(400, 35));
+		txtFirstName.setPreferredSize(new Dimension(400, 30));
 		txtFirstName.setHorizontalAlignment(SwingConstants.LEFT);
 		txtFirstName.setFont(new Font("Courier New", Font.BOLD, 20));
 		txtFirstName.setForeground(Color.DARK_GRAY);
 		panelRight.add(txtFirstName);
 
 		JTextField txtLastName = new JTextField();
-		txtLastName.setPreferredSize(new Dimension(400, 35));
+		txtLastName.setPreferredSize(new Dimension(400, 30));
 		txtLastName.setHorizontalAlignment(SwingConstants.LEFT);
 		txtLastName.setFont(new Font("Courier New", Font.BOLD, 20));
 		txtLastName.setForeground(Color.DARK_GRAY);
 		panelRight.add(txtLastName);
 
-		JTextField txtGender = new JTextField();
-		txtGender.setPreferredSize(new Dimension(220, 35));
-		txtGender.setHorizontalAlignment(SwingConstants.LEFT);
-		txtGender.setFont(new Font("Courier New", Font.BOLD, 20));
-		txtGender.setForeground(Color.DARK_GRAY);
-		panelRight.add(txtGender);
+		// JTextField txtGender = new JTextField();
+		// txtGender.setPreferredSize(new Dimension(220, 30));
+		// txtGender.setHorizontalAlignment(SwingConstants.LEFT);
+		// txtGender.setFont(new Font("Courier New", Font.BOLD, 20));
+		// txtGender.setForeground(Color.DARK_GRAY);
+		// panelRight.add(txtGender);
 
-		JTextField txtDOB = new JTextField();
-		txtDOB.setPreferredSize(new Dimension(220, 35));
+		JComboBox<String> comboGender = new JComboBox<String>();
+		comboGender.setFont(new Font("Courier New", Font.BOLD, 20));
+		comboGender.setPreferredSize(new Dimension(220, 30));
+		comboGender.setForeground(Color.DARK_GRAY);
+		comboGender.addItem("");
+		for (Gender gender : Gender.values()) {
+			comboGender.addItem(gender.toString());
+		}
+
+		panelRight.add(comboGender);
+
+		ObservingTextFieldUtility txtDOB = new ObservingTextFieldUtility();
+		txtDOB.setPreferredSize(new Dimension(220, 30));
 		txtDOB.setHorizontalAlignment(SwingConstants.LEFT);
 		txtDOB.setFont(new Font("Courier New", Font.BOLD, 20));
 		txtDOB.setForeground(Color.DARK_GRAY);
 		panelRight.add(txtDOB);
 
-//		DatePickerSample dp = new DatePickerSample();
-//		panelRight.add(dp);
-		
-		
-		// UtilDateModel model = new UtilDateModel();
-		// JDatePanelImpl datePanel = new JDatePanelImpl(model);
-		// JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
-		//
-		// frame.add(datePicker);
+		JButton btnDOB = new JButton("Pick Date");
+		btnDOB.setPreferredSize(new Dimension(115, 30));
+		btnDOB.setHorizontalAlignment(SwingConstants.CENTER);
+		btnDOB.setFont(new Font("Calibri", Font.BOLD, 20));
+		btnDOB.setForeground(Color.DARK_GRAY);
+		panelRight.add(btnDOB);
+
+		btnDOB.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String lang = null;
+				final Locale locale = getLocale(lang);
+				DatePickerUtility dp = new DatePickerUtility(txtDOB, locale);
+
+				Date selectedDate = dp.parseDate(txtDOB.getText());
+				dp.setSelectedDate(selectedDate);
+				dp.start(txtDOB);
+			}
+		});
 
 		JTextField txtNationality = new JTextField();
-		txtNationality.setPreferredSize(new Dimension(400, 35));
+		txtNationality.setPreferredSize(new Dimension(400, 30));
 		txtNationality.setHorizontalAlignment(SwingConstants.LEFT);
 		txtNationality.setFont(new Font("Courier New", Font.BOLD, 20));
 		txtNationality.setForeground(Color.DARK_GRAY);
 		panelRight.add(txtNationality);
 
+		JTextField txtEmail = new JTextField();
+		txtEmail.setPreferredSize(new Dimension(305, 30));
+		txtEmail.setHorizontalAlignment(SwingConstants.LEFT);
+		txtEmail.setFont(new Font("Courier New", Font.BOLD, 20));
+		txtEmail.setForeground(Color.DARK_GRAY);
+		panelRight.add(txtEmail);
+
 		JPasswordField txtPassword = new JPasswordField();
-		txtPassword.setPreferredSize(new Dimension(305, 35));
+		txtPassword.setPreferredSize(new Dimension(305, 30));
 		txtPassword.setHorizontalAlignment(SwingConstants.LEFT);
 		txtPassword.setFont(new Font("Courier New", Font.BOLD, 20));
 		txtPassword.setForeground(Color.DARK_GRAY);
@@ -200,7 +251,7 @@ public class SignUpView extends JFrame {
 		panelRight.add(txtPassword);
 
 		JPasswordField txtConfirmPassword = new JPasswordField();
-		txtConfirmPassword.setPreferredSize(new Dimension(305, 35));
+		txtConfirmPassword.setPreferredSize(new Dimension(305, 30));
 		txtConfirmPassword.setHorizontalAlignment(SwingConstants.LEFT);
 		txtConfirmPassword.setFont(new Font("Courier New", Font.BOLD, 20));
 		txtConfirmPassword.setForeground(Color.DARK_GRAY);
@@ -208,18 +259,18 @@ public class SignUpView extends JFrame {
 		panelRight.add(txtConfirmPassword);
 
 		JButton btnClear = new JButton("Clear");
-		btnClear.setPreferredSize(new Dimension(150, 35));
+		btnClear.setPreferredSize(new Dimension(150, 30));
 		btnClear.setFont(new Font("Calibri", Font.BOLD, 20));
 		panelRight.add(btnClear);
 
 		JButton btnSubmit = new JButton("Submit");
-		btnSubmit.setPreferredSize(new Dimension(150, 35));
+		btnSubmit.setPreferredSize(new Dimension(150, 30));
 		btnSubmit.setFont(new Font("Calibri", Font.BOLD, 20));
 		panelRight.add(btnSubmit);
 
 		JButton btnSignIn = new JButton("Sign in w/ Existing Account");
 		btnSignIn.setFont(new Font("Calibri", Font.BOLD, 20));
-		btnSignIn.setPreferredSize(new Dimension(305, 35));
+		btnSignIn.setPreferredSize(new Dimension(305, 30));
 		btnSignIn.setForeground(Color.DARK_GRAY);
 		panelRight.add(btnSignIn);
 
@@ -227,7 +278,7 @@ public class SignUpView extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				frame.setVisible(false);
 				try {
 					new LoginView();
 				} catch (IOException e1) {
@@ -241,11 +292,11 @@ public class SignUpView extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				combo.setSelectedIndex(0);
+				comboRole.setSelectedIndex(0);
 				txtID.setText("");
 				txtFirstName.setText("");
 				txtLastName.setText("");
-				txtGender.setText("");
+				comboGender.setSelectedIndex(0);
 				txtNationality.setText("");
 				txtDOB.setText("");
 				txtPassword.setText("");
@@ -254,27 +305,128 @@ public class SignUpView extends JFrame {
 			}
 		});
 
+		/**
+		 * TEST DATA
+		 */
+
+		txtPassword.setText("newpassword");
+		txtConfirmPassword.setText("newpassword");
+		txtFirstName.setText("Darren");
+		txtLastName.setText("Mc Queen");
+		txtDOB.setText("1988-12-11");
+		txtID.setText("20002");
+		txtNationality.setText("French");
+		txtSSN.setText("8545889");
+		txtEmail.setText("darren.mc.queen@mum.edu");
+		comboGender.setSelectedItem("Male");
+		comboRole.setSelectedItem("Professor");
+
 		btnSubmit.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				int warningCount = 0;
-				StringBuilder sb = new StringBuilder();
-				if (txtPassword.getText().compareTo(txtConfirmPassword.getText()) != 0) {
-					sb.append("\nYour password doesn't match! Please enter the same password in the 'Confirm Password' field.");
+				StringBuilder sbWarnings = new StringBuilder();
+				boolean isSuccessful = false;
+				ProfessorObject newProfObj = null;
+				StudentObject newStudentObj = null;
+
+				String password = new String(txtPassword.getPassword());
+				String confirmPassword = new String(txtConfirmPassword.getPassword());
+
+				if (!password.equals(confirmPassword)) {
+					sbWarnings.append(
+							"\nYour password doesn't match! Please enter the same password in the 'Confirm Password' field.");
 					warningCount++;
 				}
-//				if (rootPaneCheckingEnabled) {
-//					
-//				}
 
-				if (warningCount > 0) {
-					JOptionPane.showMessageDialog(null, sb.toString());
+				if (txtFirstName.getText().equals("") || txtLastName.getText().equals("") || txtDOB.getText().equals("")
+						|| txtID.getText().equals("") || txtNationality.getText().equals("")
+						|| comboGender.getSelectedItem().toString().equals("")
+						|| comboRole.getSelectedItem().toString().equals("")) {
+					sbWarnings.append("\nAll fields are required! Please fill up all the fields in the form.");
+					warningCount++;
 				}
 
-//				 PersonObject personObj = new StudentObject(txtFirstName, txtLastName, txtDOB)
-//				 StudentObject(txtFirstName.getText(), txtLastName.getText(),
+				if (warningCount > 0) {
+					JOptionPane.showMessageDialog(null, sbWarnings.toString());
+				}
+				String s = comboRole.getSelectedItem().toString();
+
+				if (comboRole.getSelectedItem().toString().equals(Roles.Professor.toString())) {
+
+					String strDOB = txtDOB.getText();
+
+					int yearDOB = Integer.parseInt(strDOB.substring(0, 4));
+					int monthDOB = Integer.parseInt(strDOB.substring(5, 7)) - 1;
+					int dayDOB = Integer.parseInt(strDOB.substring(8));
+
+					newProfObj = new ProfessorObject(txtFirstName.getText(), txtLastName.getText(),
+							new GregorianCalendar(yearDOB, monthDOB, dayDOB));
+					newProfObj.setGender(comboGender.getSelectedItem().toString());
+					newProfObj.setNationality(txtNationality.getText());
+					newProfObj.setPassword(password);
+					newProfObj.setEmail(txtEmail.getText());
+					newProfObj.setID(Integer.parseInt(txtID.getText()));
+					newProfObj.setSSN(txtSSN.getText());
+
+					ProfessorController profController = new ProfessorController();
+
+					try {
+						isSuccessful = profController.signUp(newProfObj);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				} else if (comboRole.getSelectedItem().toString().equals(Roles.Student.toString())) {
+
+					String strDOB = txtDOB.getText();
+
+					int yearDOB = Integer.parseInt(strDOB.substring(0, 4));
+					int monthDOB = Integer.parseInt(strDOB.substring(5, 7)) - 1;
+					int dayDOB = Integer.parseInt(strDOB.substring(8));
+					
+					newStudentObj = new StudentObject(txtFirstName.getText(), txtLastName.getText(),
+							new GregorianCalendar(yearDOB, monthDOB, dayDOB));
+					newStudentObj.setGender(comboGender.getSelectedItem().toString());
+					newStudentObj.setNationality(txtNationality.getText());
+					newStudentObj.setPassword(password);
+					newStudentObj.setEmail(txtEmail.getText());
+					newStudentObj.setID(Integer.parseInt(txtID.getText()));
+					
+
+					StudentController studentController = new StudentController();
+
+					try {
+						isSuccessful = studentController.signUp(newStudentObj);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				}
+
+				if (isSuccessful) {
+					JOptionPane.showMessageDialog(null,
+							"Welcome! " + txtFirstName.getText() + " You registration is successful!");
+					setVisible(false);
+					try {
+						new ProfessorView(newProfObj);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "You registration is not successful! Please try again!");
+				}
+				// PersonObject personObj = new StudentObject(txtFirstName,
+				// txtLastName, txtDOB)
+				// StudentObject(txtFirstName.getText(), txtLastName.getText(),
 				// txtDOB.getText(), txtStudentID.getText());
 
 				// StudentController studentController = new
@@ -285,51 +437,22 @@ public class SignUpView extends JFrame {
 		});
 
 		PanelFooter panelFooter = new PanelFooter();
-		add(panelFooter);
+		frame.add(panelFooter);
 
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setVisible(true);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setVisible(true);
 
+	}
+
+	private Locale getLocale(String loc) {
+		if (loc != null && loc.length() > 0)
+			return new Locale(loc);
+		else
+			return Locale.US;
 	}
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws SQLException, IOException {
 		SignUpView studentView = new SignUpView();
 	}
-
-}
-
-
-
-class DatePickerSample extends Application {
-	 
-    private Stage stage;
-    private DatePicker checkInDatePicker;
-    public static void main(String[] args) {
-        Locale.setDefault(Locale.US);
-        launch(args);
-    }
- 
-    @Override
-    public void start(Stage stage) {
-        this.stage = stage;
-        stage.setTitle("DatePickerSample ");
-        initUI();
-        stage.show();
-    }
- 
-    private void initUI() {
-        VBox vbox = new VBox(20);
-        vbox.setStyle("-fx-padding: 10;");
-        Scene scene = new Scene(vbox, 200, 100);
-        stage.setScene(scene);
-
-        checkInDatePicker = new DatePicker();
-
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.add(checkInDatePicker, 0, 1);
-        vbox.getChildren().add(gridPane);
-    }
 }

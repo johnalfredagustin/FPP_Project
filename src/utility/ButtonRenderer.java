@@ -1,6 +1,8 @@
 package utility;
 
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
@@ -14,6 +16,8 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
 		// Set button properties
 		setOpaque(true);
 		setText("Submit");
+		
+		
 	}
 
 	@Override

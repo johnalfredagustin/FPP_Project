@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -22,6 +23,7 @@ public class ButtonEditor extends DefaultCellEditor {
 	private String lbl;
 	private Boolean clicked;
 	private int ID;
+	private ArrayList<ProfessorStudentCourseMetricObject> profStudentCourseMetric = new ArrayList<ProfessorStudentCourseMetricObject>();
 
 	public ButtonEditor(JTextField txt) {
 		super(txt);
@@ -40,6 +42,7 @@ public class ButtonEditor extends DefaultCellEditor {
 
 	public ButtonEditor(ArrayList<ProfessorStudentCourseMetricObject> profStudentCourseMetric, JTable table, int ID) {
 		super(new JTextField());
+		this.profStudentCourseMetric = profStudentCourseMetric;
 		this.ID = ID;
 		btn = new JButton();
 		btn.setOpaque(true);
@@ -58,23 +61,28 @@ public class ButtonEditor extends DefaultCellEditor {
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object object, boolean isSelected, int row, int column) {
 
-		System.out.println(String.valueOf(table.getValueAt(row, 4)));
-
 		ProfessorController profController = new ProfessorController();
-		int professorID = ID;
-		int studentID = Integer.parseInt(table.getValueAt(row, 2).toString());
-		int courseID = Integer.parseInt(table.getValueAt(row, 1).toString());
-		double gradeNumber = Double.parseDouble(table.getValueAt(row, 6).toString());
+		int professorID = profStudentCourseMetric.get(row).getProfessor().getID();
+		int courseID = profStudentCourseMetric.get(row).getCourse().getCourseID();
+		int studentID = profStudentCourseMetric.get(row).getStudent().getID();
+		String studentName = profStudentCourseMetric.get(row).getStudent().getFirstName() + " "
+				+ profStudentCourseMetric.get(row).getStudent().getLastName();
+
+		double gradeNumber = Double.parseDouble(table.getValueAt(row, 3).toString());
 
 		try {
-			profController.submitOneStudentGrade(professorID, studentID, courseID, gradeNumber);
+			boolean result = profController.submitOneStudentGrade(professorID, studentID, courseID, gradeNumber);
+			if (result) {
+				JOptionPane.showMessageDialog(null,
+						"Successfully submitted grade for student ID: " + studentID + " (" + studentName + ")");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			// new ProfessorGradeView(professorObject);
 		}
 
+		
+		
 		lbl = (object == null) ? "" : object.toString();
 		btn.setText(lbl);
 		clicked = true;

@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -60,27 +61,24 @@ public class ProfessorGradeView extends JFrame {
 		// DefaultTableModel tableModel = new DefaultTableModel();
 		DefaultTableModel tableModel = new DefaultTableModel() {
 
-			boolean[] canEdit = new boolean[] { false, false, false, false, false, false, true, false, true };
+			boolean[] canEdit = new boolean[] { false, false, false, true, false, true, false, false, false };
 
 			@Override
 			public boolean isCellEditable(int rowIndex, int columnIndex) {
 				return canEdit[columnIndex];
 			}
 		};
-
+		
 		JTable table = new JTable(tableModel);
 		table.setFont(new Font("Serif", Font.ITALIC, 14));
 		table.setRowHeight(table.getRowHeight() + 10);
 
-		tableModel.addColumn("Professor ID");
-		tableModel.addColumn("Course ID");
-		tableModel.addColumn("Student ID");
-		tableModel.addColumn("First Name");
-		tableModel.addColumn("Last Name");
-		tableModel.addColumn("Course Code");
-		tableModel.addColumn("Grade Number");
-		tableModel.addColumn("Grade Letter");
-		tableModel.addColumn("Submit Grade");
+		String[] columnName = new String[] { "First Name", "Last Name", "Course Code", "Grade Number", "Grade Letter",
+				"Submit Grade", "Professor ID", "Course ID", "Student ID" };
+
+		for (String string : columnName) {
+			tableModel.addColumn(string);
+		}
 
 		// Customize table header
 		JTableHeader header = table.getTableHeader();
@@ -95,21 +93,28 @@ public class ProfessorGradeView extends JFrame {
 
 		for (int i = 0; i < object.size(); i++) {
 
-			tableModel.addRow(new Object[] { professorObject.getID(), object.get(i).getCourse().getCourseID(),
-					object.get(i).getStudent().getID(), object.get(i).getStudent().getFirstName(),
-					object.get(i).getStudent().getLastName(), object.get(i).getCourse().getCourseCode(),
-					object.get(i).getGradeNumber(), String.valueOf("") });
+			tableModel.addRow(
+					new Object[] { object.get(i).getStudent().getFirstName(), object.get(i).getStudent().getLastName(),
+							object.get(i).getCourse().getCourseCode(), object.get(i).getGradeNumber(),
+							object.get(i).getGradeLetter(), String.valueOf(""), professorObject.getID(),
+							object.get(i).getCourse().getCourseID(), object.get(i).getStudent().getID() });
 
 		}
 
-		// table.removeColumn(table.getColumnModel().getColumn(0));
+//		table.setColumnSelectionAllowed(false);
+//		table.setRowSelectionAllowed(false);
+		
+		table.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
+		table.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(object, table, professorObject.getID()));
 
-		// table.getModel().getValueAt(table.getSelectedRow(),1);
+		
+		table.removeColumn(table.getColumnModel().getColumn(8));
+		table.removeColumn(table.getColumnModel().getColumn(7));
+		table.removeColumn(table.getColumnModel().getColumn(6));
 
-		table.getColumnModel().getColumn(8).setCellRenderer(new ButtonRenderer());
-		table.getColumnModel().getColumn(8).setCellEditor(new ButtonEditor(object, table, professorObject.getID()));
-
-		table.setEnabled(true);
+		table.setDragEnabled(false);
+		table.getTableHeader().setReorderingAllowed(false);
+		
 		JScrollPane coursePanel = new JScrollPane(table);// enable scroll
 															// for table
 		coursePanel.setPreferredSize(new Dimension(1300, 400));

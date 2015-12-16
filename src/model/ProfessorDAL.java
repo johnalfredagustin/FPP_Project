@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import orm.CourseObject;
@@ -63,11 +64,22 @@ public class ProfessorDAL {
 	@SuppressWarnings("finally")
 	public boolean signup(ProfessorObject professorObj) throws SQLException {
 
+		Calendar calendar = professorObj.getDOB();
+
+		int month = calendar.get(Calendar.MONTH) + 1;
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+		String strYear = String.valueOf(calendar.get(Calendar.YEAR));
+		String strMonth = month < 10 ? ("0" + month).substring(0, 2) : String.valueOf(month);
+		String strDay = day < 10 ? ("0" + day).substring(0, 2) : String.valueOf(day);
+		String strDate = strYear + "-" + strMonth + "-" + strDay;
+
 		int recordCount = 0;
-		sqlComm = "EXEC dbo.spInsert_NewProfessorInfo " + professorObj.getID() + ", '" + professorObj.getFirstName()
-				+ "', '" + professorObj.getLastName() + "', '" + professorObj.getDOB() + "', '"
-				+ professorObj.getGender() + "','" + professorObj.getNationality() + "', '" + professorObj.getSSN()
-				+ "','" + professorObj.getPassword() + "'";
+		sqlComm = "EXEC dbo.spInsert_NewProfessorInfo " + professorObj.getID() + ", " + professorObj.getSSN() + ", '"
+				+ professorObj.getFirstName() + "', '" + professorObj.getLastName() + "', '"
+				+ strDate + "', '" + professorObj.getGender() + "', '"
+				+ professorObj.getNationality() + "', '" + professorObj.getEmail() + "', '" + professorObj.getPassword()
+				+ "'";
 		try {
 			statement = sqlConn.createStatement();
 			recordCount = statement.executeUpdate(sqlComm);
@@ -75,14 +87,14 @@ public class ProfessorDAL {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			resultSet.close();
 			statement.close();
 			sqlConn.close();
-			return recordCount > 0 ? true : false;
+			return recordCount != 0 ? true : false;
 		}
 	}
 
-//	@SuppressWarnings("finally")
+	// @SuppressWarnings("finally")
+	@SuppressWarnings("finally")
 	public ArrayList<ProfessorStudentCourseMetricObject> getAllStudentCourseDetail(int professorID)
 			throws SQLException {
 
@@ -132,10 +144,12 @@ public class ProfessorDAL {
 	}
 
 	@SuppressWarnings("finally")
-	public boolean submitOneStudentGrade(int professorID, int studentID, int courseID, double gradeNumber) throws SQLException {
+	public boolean submitOneStudentGrade(int professorID, int studentID, int courseID, double gradeNumber)
+			throws SQLException {
 
 		int recordCount = 0;
-		sqlComm = "EXEC dbo.spUpdate_OneStudentGrade " + professorID + ", " + studentID + ", " + courseID + ", " + gradeNumber;
+		sqlComm = "EXEC dbo.spUpdate_OneStudentGrade " + professorID + ", " + studentID + ", " + courseID + ", "
+				+ gradeNumber;
 		try {
 			statement = sqlConn.createStatement();
 			recordCount = statement.executeUpdate(sqlComm);
@@ -148,5 +162,5 @@ public class ProfessorDAL {
 			return recordCount > 0 ? true : false;
 		}
 	}
-	
+
 }
