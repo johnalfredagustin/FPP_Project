@@ -71,24 +71,21 @@ public class StudentCourseView extends JFrame {
 					return canEdit[columnIndex];
 				}
 			};
-
+			JTable courseTable = new JTable(tableModel);
 			for (int j = 0; j < 5; j++) {
 				tableModel.addColumn(tableHeader[j]);
 			}
 
-			String[] tableRow = new String[5];
 			for (int i = 0; i < courseObject.size(); i++) {
-				tableRow[0] = courseObject.get(i).getCourse().getCourseCode();
-				tableRow[1] = courseObject.get(i).getCourse().getCourseName();
-				tableRow[2] = courseObject.get(i).getCourse().getCourseDesc();
-				tableRow[3] = courseObject.get(i).getProfessor().getFirstName() + " "
-						+ courseObject.get(i).getProfessor().getLastName();
-				tableRow[4] = Integer.toString(courseObject.get(i).getProfessor().getID());
-				tableModel.addRow(tableRow);
+				tableModel.addRow(new Object[] { courseObject.get(i).getCourse().getCourseCode(),
+						courseObject.get(i).getCourse().getCourseName(),
+						courseObject.get(i).getCourse().getCourseDesc(),
+						courseObject.get(i).getProfessor().getFirstName() + " "
+								+ courseObject.get(i).getProfessor().getLastName(),
+						courseObject.get(i).getProfessor().getID() });
 
 			}
-
-			JTable courseTable = new JTable(tableModel);
+			courseTable.removeColumn(courseTable.getColumnModel().getColumn(4));
 
 			courseTable.setFont(new Font("Serif", Font.ITALIC, 14));
 			courseTable.setRowHeight(courseTable.getRowHeight() + 10);
@@ -108,15 +105,13 @@ public class StudentCourseView extends JFrame {
 			courseTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 			courseTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 
-			// new ButtonColumn(courseTable);
 			JScrollPane coursePanel = new JScrollPane(courseTable);
 
 			coursePanel.setPreferredSize(new Dimension(980, 200));
 			coursePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
 			JPanel tablePanel = new JPanel();
-			tablePanel.add(coursePanel);// add table to a
-										// panel
+			tablePanel.add(coursePanel);
 
 			JPanel buttonPanel = new JPanel();
 			buttonPanel.setPreferredSize(new Dimension(800, 50));
@@ -171,11 +166,11 @@ public class StudentCourseView extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (courseTable.getSelectedRow() != -1) {
 						String courseCode = (String) courseTable.getValueAt(courseTable.getSelectedRow(), 0);
-						Integer professorID = Integer.valueOf((String) courseTable.getValueAt(courseTable.getSelectedRow(), 4));
-//						System.out.println(professorID);
+						int professorID = (int) courseTable.getModel().getValueAt(courseTable.getSelectedRow(), 4);
 						int studentID = 984946;
 						try {
-							studentController.saveCourse(studentID, courseCode,professorID);
+							int row = studentController.saveCourse(studentID, courseCode, professorID);
+							JOptionPane.showMessageDialog(null, row);
 						} catch (SQLException e1) {
 							e1.printStackTrace();
 						}

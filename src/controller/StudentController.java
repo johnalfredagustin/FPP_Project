@@ -25,7 +25,7 @@ public class StudentController {
 		return studentDAL.getAllCourse(studentID);
 	}
 	
-	public void saveCourse(int studentID, String courseCode, int professorID) throws SQLException {
-		studentDAL.saveCourse(studentID, courseCode, professorID);
+	public int saveCourse(int studentID, String courseCode, int professorID) throws SQLException {
+		return studentDAL.saveCourse(studentID, courseCode, professorID);
 	}
 }

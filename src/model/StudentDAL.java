@@ -131,18 +131,20 @@ public class StudentDAL {
 		}
 	}
 	
-	public void saveCourse(int studentID, String courseCode, int professorID) throws SQLException {
+	@SuppressWarnings("finally")
+	public int saveCourse(int studentID, String courseCode, int professorID) throws SQLException {
 
 		sqlComm = "EXEC dbo.spInsert_RegisterCourseStudent " +studentID +" "+ courseCode+ " "+professorID;
-
+		int rows = 0;
 		try {
 			statement = sqlConn.createStatement();
-			statement.executeQuery(sqlComm);
+			 rows = statement.executeUpdate(sqlComm);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			statement.close();
 			sqlConn.close();
+			return rows;
 		}
 	}
 
