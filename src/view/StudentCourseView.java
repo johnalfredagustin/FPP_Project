@@ -28,7 +28,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import controller.CourseController;
-import controller.StudentController;
 import orm.CourseObject;
 //import orm.StudentObject;
 
@@ -39,10 +38,6 @@ public class StudentCourseView extends JFrame {
 			setSize(1000, 1000);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(new BorderLayout());
-
-			// HeaderView headerTitle = new HeaderView();
-			// JPanel headerPanel = headerTitle.header();
-			// add(headerPanel,BorderLayout.NORTH);
 
 			JPanel labelPanel = new JPanel();
 			labelPanel.setPreferredSize(new Dimension(250, 200));
@@ -55,10 +50,13 @@ public class StudentCourseView extends JFrame {
 			labelPanel.add(titleLabel);
 			add(labelPanel, BorderLayout.NORTH);
 
-			String tableHeader[] = { "Course Code", "Course Name", "Course Description", "Professor" };
+			add(labelPanel, BorderLayout.NORTH);
 
-			StudentController courseCtl = new StudentController();
-			ArrayList<CourseObject> courseObject = courseCtl.getAllCourse(984946);
+			String tableHeader[] = { "Course Code", "Course Name", "Course Description" };
+
+			CourseController courseCtl = new CourseController();
+			ArrayList<CourseObject> courseObject = courseCtl.getAllCourse();
+			
 
 			// Table model
 			DefaultTableModel tableModel = new DefaultTableModel() {
@@ -70,7 +68,7 @@ public class StudentCourseView extends JFrame {
 				}
 			};
 
-			for (int j = 0; j < 4; j++) {
+			for (int j = 0; j < 3; j++) {
 				tableModel.addColumn(tableHeader[j]);
 			}
 
@@ -105,7 +103,7 @@ public class StudentCourseView extends JFrame {
 			// new ButtonColumn(courseTable);
 			JScrollPane coursePanel = new JScrollPane(courseTable);
 
-			coursePanel.setPreferredSize(new Dimension(980, 200));
+			coursePanel.setPreferredSize(new Dimension(1000, 200));
 			coursePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
 			JPanel tablePanel = new JPanel();
@@ -124,6 +122,11 @@ public class StudentCourseView extends JFrame {
 			buttonPanel.add(buttonSubmit);
 			buttonPanel.add(buttonBack);
 
+			
+			JPanel panelFooter = new JPanel();
+			panelFooter.setPreferredSize(new Dimension(100, 20));
+			add(panelFooter);
+			
 			add(buttonPanel, BorderLayout.SOUTH);
 			add(tablePanel, BorderLayout.CENTER); // add panel to frame
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -133,8 +136,8 @@ public class StudentCourseView extends JFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-//					new StudentView();
-//					setVisible(false);
+					 setVisible(false);
+					 new StudentView();
 
 				}
 			});
@@ -144,20 +147,15 @@ public class StudentCourseView extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (courseTable.getSelectedRow() != -1) {
-						String courseCode = (String) courseTable.getValueAt(courseTable.getSelectedRow(), 0);
-						int studentID = 984946;
-						try {
-							courseCtl.saveCourse(studentID,courseCode);
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						}
-					} else {
+						System.out.println(courseTable.getValueAt(courseTable.getSelectedRow(), 0));
+					}else{
 						JOptionPane.showMessageDialog(null, "Please select a course");
 					}
 				}
 			});
 
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

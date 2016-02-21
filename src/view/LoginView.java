@@ -3,18 +3,22 @@ package view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+
+import com.apple.dnssd.TXTRecord;
+
 import controller.LoginController;
-import controller.ProfessorController;
 import controller.StudentController;
-import orm.PersonObject;
-import orm.ProfessorObject;
 import orm.StudentObject;
 
-@SuppressWarnings("serial")
+import javax.imageio.*;
+
 public class LoginView extends JFrame {
 
 	public LoginView() throws IOException {
@@ -22,12 +26,11 @@ public class LoginView extends JFrame {
 		setSize(1000, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setTitle("Course Registration System > Login ");
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		JPanel panelTopBorder = new JPanel();
 		panelTopBorder.setLayout(new BorderLayout());
-		panelTopBorder.setPreferredSize(new Dimension(1500, 150));
+		panelTopBorder.setPreferredSize(new Dimension(1500, 200));
 		add(panelTopBorder);
 
 		JLabel lblSysName = new JLabel("Course Registration System");
@@ -39,17 +42,17 @@ public class LoginView extends JFrame {
 		add(panelHeader);
 
 		JPanel panelLeft = new JPanel();
-		panelLeft.setPreferredSize(new Dimension(700, 300));
+		panelLeft.setPreferredSize(new Dimension(700, 400));
 		panelLeft.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		add(panelLeft);
 
 		JPanel panelCenter = new JPanel();
-		panelCenter.setPreferredSize(new Dimension(300, 420));
+		panelCenter.setPreferredSize(new Dimension(300, 400));
 		panelCenter.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		add(panelCenter);
 
 		JPanel panelRight = new JPanel();
-		panelRight.setPreferredSize(new Dimension(350, 420));
+		panelRight.setPreferredSize(new Dimension(250, 400));
 		panelRight.setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(panelRight);
 
@@ -73,9 +76,8 @@ public class LoginView extends JFrame {
 
 		JComboBox<String> combo = new JComboBox<String>();
 		combo.setFont(new Font("Courier New", Font.BOLD, 20));
-		combo.setPreferredSize(new Dimension(315, 30));
+		combo.setPreferredSize(new Dimension(200, 30));
 		combo.setForeground(Color.DARK_GRAY);
-		combo.addItem("");
 		for (Roles role : Roles.values()) {
 			combo.addItem(role.toString());
 		}
@@ -85,41 +87,24 @@ public class LoginView extends JFrame {
 		JTextField txUserName = new JTextField("984946");
 		txUserName.setFont(new Font("Courier New", Font.BOLD, 20));
 		txUserName.setForeground(Color.DARK_GRAY);
-		txUserName.setPreferredSize(new Dimension(315, 30));
+		txUserName.setPreferredSize(new Dimension(200, 30));
 		panelRight.add(txUserName);
 
 		JPasswordField pfPassword = new JPasswordField("Password");
 		pfPassword.setFont(new Font("Courier New", Font.BOLD, 20));
 		pfPassword.setForeground(Color.DARK_GRAY);
-		pfPassword.setPreferredSize(new Dimension(315, 30));
+		pfPassword.setPreferredSize(new Dimension(200, 30));
 		pfPassword.setEchoChar('*');
 		panelRight.add(pfPassword);
 
-		JButton btnClear = new JButton("Clear Fields");
-		btnClear.setFont(new Font("Calibri", Font.BOLD, 20));
+		JButton btnClear = new JButton("Clear");
+		btnClear.setFont(new Font("Courier New", Font.BOLD, 20));
 		btnClear.setForeground(Color.DARK_GRAY);
 		JButton btnLogin = new JButton("Login");
-		btnLogin.setFont(new Font("Calibri", Font.BOLD, 20));
+		btnLogin.setFont(new Font("Courier New", Font.BOLD, 20));
 		btnLogin.setForeground(Color.DARK_GRAY);
-		JButton btnSignUp = new JButton("Sign Up");
-		btnSignUp.setFont(new Font("Calibri", Font.BOLD, 20));
-		btnSignUp.setForeground(Color.DARK_GRAY);
-		
 		panelRight.add(btnClear);
 		panelRight.add(btnLogin);
-		panelRight.add(btnSignUp);
-		
-		PanelFooter panelFooter = new PanelFooter();
-		add(panelFooter);
-		
-		btnSignUp.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				
-			}
-		});
 
 		btnLogin.addActionListener(new ActionListener() {
 
@@ -139,22 +124,17 @@ public class LoginView extends JFrame {
 					System.out.println(combo.getSelectedItem());
 					boolean isValidLogin = loginController.isValidLogin(txUserName.getText(), pfPassword.getText(), combo.getSelectedItem().toString());
 					
-					PersonObject personObject;
 					
 					if (isValidLogin && combo.getSelectedItem().toString() == "Student") {
 						StudentController studentController = new StudentController();
-						personObject = studentController.getStudentDetail(Integer.parseInt(txUserName.getText()));
+						StudentObject studentObject = studentController.getStudentDetail(Integer.parseInt(txUserName.getText()));
 						
 						setVisible(false);
-						StudentView studentView = new StudentView(personObject);
+						StudentView studentView = new StudentView(studentObject);
 						studentView.setVisible(true);
 					} else if (isValidLogin && combo.getSelectedItem().toString() == "Professor") {
-						ProfessorController professorController = new ProfessorController();
-						personObject = professorController.getProfessorDetail(Integer.parseInt(txUserName.getText()));
-						
-						
 						setVisible(false);
-						ProfessorView profView = new ProfessorView(personObject);
+						ProfessorView profView = new ProfessorView();
 						profView.setVisible(true);
 					} else {
 						JOptionPane.showMessageDialog(btnLogin, "Username or password is incorect!");
@@ -181,22 +161,6 @@ public class LoginView extends JFrame {
 		pack();
 		setVisible(true);
 
-		btnSignUp.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				try {
-					new SignUpView();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
 	}
 
 	@SuppressWarnings("unused")

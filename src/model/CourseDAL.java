@@ -14,8 +14,8 @@ public class CourseDAL {
 	private ResultSet resultSet = null;
 	private ArrayList<CourseObject> course = new ArrayList<CourseObject>();
 	
-	//@SuppressWarnings("finally")
-	/*public ArrayList<CourseObject> getAllCourse() throws SQLException {
+	@SuppressWarnings("finally")
+	public ArrayList<CourseObject> getAllCourse() throws SQLException {
 
 		sqlComm = "EXEC dbo.spSelect_AllAvaiableCoursesToStudent 984946";
 
@@ -42,7 +42,7 @@ public class CourseDAL {
 			sqlConn.close();
 			return course;
 		}
-	}*/
+	}
 	
 	
 	@SuppressWarnings("finally")

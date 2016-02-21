@@ -2,8 +2,8 @@ package orm;
 
 public class ProfessorStudentCourseMetricObject {
 
-	private PersonObject student;
-	private PersonObject professor;
+	private StudentObject student;
+	private ProfessorObject professor;
 	private CourseObject course;
 	
 	private double gradeNumber;
@@ -15,16 +15,16 @@ public class ProfessorStudentCourseMetricObject {
 	public void setCourse(CourseObject course) {
 		this.course = course;
 	}
-	public PersonObject getStudent() {
+	public StudentObject getStudent() {
 		return student;
 	}
-	public void setStudent(PersonObject student) {
+	public void setStudent(StudentObject student) {
 		this.student = student;
 	}
-	public PersonObject getProfessor() {
+	public ProfessorObject getProfessor() {
 		return professor;
 	}
-	public void setProfessor(PersonObject professor) {
+	public void setProfessor(ProfessorObject professor) {
 		this.professor = professor;
 	}
 	public double getGradeNumber() {

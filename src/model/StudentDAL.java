@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import orm.CourseObject;
-import orm.PersonObject;
+import orm.ProfessorStudentCourseMetricObject;
 import orm.StudentObject;
 import utility.ConnectionUtility;
 
@@ -18,116 +18,36 @@ public class StudentDAL {
 	private Connection sqlConn = ConnectionUtility.getConnection();
 	private Statement statement;
 	private ResultSet resultSet = null;
-	private ArrayList<PersonObject> personArrayList = new ArrayList<PersonObject>();
-	private ArrayList<CourseObject> course = new ArrayList<CourseObject>();
+	private ArrayList<StudentObject> students = new ArrayList<StudentObject>();
 	private StudentObject studentObject;
-	private PersonObject personObject;
-	private int recordCount = 0;
-
-	@SuppressWarnings("finally")
-	public ArrayList<PersonObject> getAllStudentDetails(int studentID) throws SQLException {
-
-		sqlComm = "EXEC dbo.spSelect_StudentInfo " + studentID;
-
-		try {
-			statement = sqlConn.createStatement();
-			resultSet = statement.executeQuery(sqlComm);
-
-			while (resultSet.next()) {
-
-				String strDate = resultSet.getDate("DOB").toString();
-
-				PersonObject personObject = new StudentObject(resultSet.getString("FirstName"),
-						resultSet.getString("LastName"),
-						new GregorianCalendar(Integer.parseInt(strDate.substring(0, 3)),
-								Integer.parseInt(strDate.substring(5, 6)), Integer.parseInt(strDate.substring(8))));
-
-				personObject.setID(resultSet.getInt("StudentID"));
-
-				personArrayList.add(studentObject);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			resultSet.close();
-			statement.close();
-			sqlConn.close();
-			return personArrayList;
-		}
-	}
-
-	@SuppressWarnings("finally")
-	public PersonObject getStudentDetail(int studentID) throws SQLException {
-
-		sqlComm = "EXEC dbo.spSelect_StudentInfo " + studentID;
-
-		try {
-			statement = sqlConn.createStatement();
-			resultSet = statement.executeQuery(sqlComm);
-
-			while (resultSet.next()) {
-
-				String strDate = resultSet.getDate("DOB").toString();
-
-				personObject = new StudentObject(resultSet.getString("FirstName"), resultSet.getString("LastName"),
-						new GregorianCalendar(Integer.parseInt(strDate.substring(0, 3)),
-								Integer.parseInt(strDate.substring(5, 6)), Integer.parseInt(strDate.substring(8))));
-
-				personObject.setID(resultSet.getInt("StudentID"));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			resultSet.close();
-			statement.close();
-			sqlConn.close();
-			return personObject;
-		}
-	}
-
-	@SuppressWarnings("finally")
-	public boolean signup(PersonObject personObj) throws SQLException {
-
-		sqlComm = "EXEC dbo.spInsert_NewStudentInfo " + personObj + ", '" + studentObject.getFirstName() + "', '"
-
-				+ studentObject.getLastName() + "', '" + studentObject.getDOB() + "', '" + studentObject.getGender()
-				+ "','" + studentObject.getNationality() + "',NULL,'" + studentObject.getPassword() + "'";
-
-		try {
-			statement = sqlConn.createStatement();
-			recordCount = statement.executeUpdate(sqlComm);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			resultSet.close();
-			statement.close();
-			sqlConn.close();
-			return recordCount > 0 ? true : false;
-		}
-	}
 	
 	@SuppressWarnings("finally")
-	public ArrayList<CourseObject> getAllCourse(int studentID) throws SQLException {
+	public ArrayList<StudentObject> getAllStudentDetails(int studentID) throws SQLException {
 
-		sqlComm = "EXEC dbo.spSelect_AllAvaiableCoursesToStudent "+studentID;
+		sqlComm = "EXEC dbo.spSelect_StudentInfo " + studentID;
 
 		try {
 			statement = sqlConn.createStatement();
 			resultSet = statement.executeQuery(sqlComm);
 
 			int i = 0;
-			
 			while (resultSet.next()){
-				CourseObject temp = new CourseObject();
-				temp.setCourseDesc(resultSet.getString("CourseDescription"));
-				temp.setCourseName(resultSet.getString("CourseName"));
-				temp.setCourseCode(resultSet.getString("CourseCode"));
-				course.add(temp);
+				
+				String strDate = resultSet.getDate("DOB").toString();
+				
+				StudentObject studentObject = new StudentObject(
+						resultSet.getString("FirstName"),
+						resultSet.getString("LastName"),
+						new GregorianCalendar(Integer.parseInt(strDate.substring(0, 3)), 
+								Integer.parseInt(strDate.substring(5, 6)), 
+								Integer.parseInt(strDate.substring(8))));
+				
+				students.get(i).setStudentID(resultSet.getInt("StudentID"));
+				students.get(i).setFirstName(resultSet.getString("FirstName"));
+				students.get(i).setLastName(resultSet.getString("LastName"));
+				
+				i++;
 			}
-			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -135,23 +55,43 @@ public class StudentDAL {
 			resultSet.close();
 			statement.close();
 			sqlConn.close();
-			return course;
+			return students;
 		}
 	}
 	
-	public void saveCourse(int studentID, String courseCode) throws SQLException {
+	@SuppressWarnings("finally")
+	public StudentObject getStudentDetail(int studentID) throws SQLException {
 
-		sqlComm = "EXEC dbo.spSave_SelectedCourseForStudent " +studentID +" "+ courseCode;
+		sqlComm = "EXEC dbo.spSelect_StudentInfo " + studentID;
 
 		try {
 			statement = sqlConn.createStatement();
 			resultSet = statement.executeQuery(sqlComm);
+
+			int i = 0;
+			while (resultSet.next()){
+				
+				String strDate = resultSet.getDate("DOB").toString();
+				
+				studentObject = new StudentObject(
+						resultSet.getString("FirstName"),
+						resultSet.getString("LastName"),
+						new GregorianCalendar(Integer.parseInt(strDate.substring(0, 3)), 
+								Integer.parseInt(strDate.substring(5, 6)), 
+								Integer.parseInt(strDate.substring(8))));
+				
+				studentObject.setStudentID(resultSet.getInt("StudentID"));
+				
+				i++;
+			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			resultSet.close();
 			statement.close();
 			sqlConn.close();
+			return studentObject;
 		}
 	}
 }

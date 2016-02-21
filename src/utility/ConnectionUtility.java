@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnectionUtility {
 
-	public static final String URL = "jdbc:sqlserver://DESKTOP-8K96FP1;databaseName=odbCourseRegistration";
+	public static final String URL = "jdbc:sqlserver://JOHN;databaseName=odbCourseRegistration";
 	public static final String DRIVER_CLASS_NAME = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	public static final String USER_NAME = "sqlJavaServiceAccount";
 	public static final String PASSWORD = "sqlJavaServiceAccount";

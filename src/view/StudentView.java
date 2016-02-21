@@ -5,17 +5,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javax.swing.*;
 
-import orm.PersonObject;
 import orm.StudentObject;
 
-@SuppressWarnings("serial")
 public class StudentView extends JFrame {
 
-	private static PersonObject personObject;
+	private static StudentObject studentObject;
 	
-	public StudentView(PersonObject personObject) throws SQLException, IOException {
+	public StudentView(StudentObject studentObject) throws SQLException, IOException {
 
-		StudentView.personObject =  personObject;
+		StudentView.studentObject =  studentObject;
 		
 		setSize(1000, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,7 +24,7 @@ public class StudentView extends JFrame {
 		
 		
 		 
-		 add(new JLabel("Welcome back " + personObject.getFirstName() + " " + personObject.getLastName()));
+		 add(new JLabel("Welcome back " + StudentView.studentObject.getFirstName() + " " + StudentView.studentObject.getLastName()));
 		// JPanel labelPanel = new JPanel();
 		// labelPanel.setPreferredSize(new Dimension(250, 100));
 		// labelPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -59,9 +57,8 @@ public class StudentView extends JFrame {
 
 	}
 
-	@SuppressWarnings("unused")
 	public static void main(String[] args) throws SQLException, IOException {
-		StudentView studentView = new StudentView(StudentView.personObject);
+		StudentView studentView = new StudentView(StudentView.studentObject);
 	}
 
 }

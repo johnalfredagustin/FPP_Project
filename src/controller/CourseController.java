@@ -9,10 +9,8 @@ import orm.CourseObject;
 public class CourseController {
 
 	private CourseDAL course = new CourseDAL();
-//
-//	public ArrayList<CourseObject> getAllCourse() throws SQLException {
-//		return course.getAllCourse();
-//	}
-//	
-	
+
+	public ArrayList<CourseObject> getAllCourse() throws SQLException {
+		return course.getAllCourse();
+	}
 }
