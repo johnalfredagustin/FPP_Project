@@ -102,7 +102,5 @@ public class PersonObject {
 	public void setID(int iD) {
 		ID = iD;
 	}
-
-	
 	
 }

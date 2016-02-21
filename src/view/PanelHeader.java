@@ -11,12 +11,23 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.Roles;
+
 @SuppressWarnings("serial")
 public class PanelHeader extends JPanel {
 
-	public PanelHeader() throws IOException {
+	public PanelHeader(String role) throws IOException {
 
-		String strImgPath = "D:/MUM/02 FPP/07 Project/CourseRegistrationProject/src/Template/HeaderBackground.jpg";
+		String strImgPath = "";
+		
+		if (role.equals(String.valueOf(Roles.Professor))) {
+			strImgPath = "D:/MUM/02 FPP/07 Project/CourseRegistrationProject/src/Template/ProfessorHeaderBackground.jpg";	
+		} else if (role.equals(String.valueOf(Roles.Student))) {
+			strImgPath = "D:/MUM/02 FPP/07 Project/CourseRegistrationProject/src/Template/StudentHeaderBackground.jpg";
+		} else {
+			strImgPath = "D:/MUM/02 FPP/07 Project/CourseRegistrationProject/src/Template/StudentHeaderBackground.jpg";
+		}
+		
 		BufferedImage myPicture = ImageIO.read(new File(strImgPath));
 		JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 		

@@ -11,7 +11,7 @@ public class ConnectionUtility {
 	public static final String USER_NAME = "sqlJavaServiceAccount";
 	public static final String PASSWORD = "sqlJavaServiceAccount";
 	private static Connection conn = null;
-	
+
 	public ConnectionUtility() {
 		try {
 			Class.forName(DRIVER_CLASS_NAME);
@@ -19,7 +19,7 @@ public class ConnectionUtility {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static Connection getConnection() {
 		try {
 			conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
@@ -28,8 +28,5 @@ public class ConnectionUtility {
 		}
 		return conn;
 	}
-	
-	public static void closeConnection() {
-		
-	}
+
 }

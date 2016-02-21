@@ -8,14 +8,18 @@ import utility.*;
 public class LoginDAL {
 
 	private String sqlComm;
-	private Connection sqlConn = ConnectionUtility.getConnection();
+	private Connection sqlConn;
 	private Statement statement;
 	private ResultSet resultSet = null;
+	
 	private LoginObject loginObject = new LoginObject();
 
 	@SuppressWarnings("finally")
 	public boolean isValidLogin(String username, String password, String role) throws SQLException {
+		
 		boolean isValidLogin = false;
+		
+		sqlConn = ConnectionUtility.getConnection();
 		sqlComm = "EXEC dbo.spUtil_Login " + username + ", '" + password + "', '" + role + "'";
 
 		try {
@@ -24,14 +28,11 @@ public class LoginDAL {
 
 			loginObject.setUsername(username);
 			loginObject.setPassword(password);
-			
-			if (!resultSet.next()){
-				
-				isValidLogin = false;}
-			else
+
+			if (!resultSet.next()) {
+				isValidLogin = false;
+			} else
 				isValidLogin = true;
-			System.out.println(resultSet.getString("FirstName"));
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

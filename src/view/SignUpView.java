@@ -23,22 +23,27 @@ import utility.ObservingTextFieldUtility;
 @SuppressWarnings("serial")
 public class SignUpView extends JFrame {
 
-	public SignUpView() throws SQLException, IOException {
+	private static String role = "";
 
-		JFrame frame = new JFrame();
-		frame.setSize(1000, 1000);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new FlowLayout(FlowLayout.LEFT));
+	@SuppressWarnings("static-access")
+	public SignUpView(String role) throws SQLException, IOException {
 
-		PanelHeader panelHeader = new PanelHeader();
-		frame.add(panelHeader);
+		this.role = role;
 
-		JLabel lblHeader = new JLabel("Signup for new account.");
+		setSize(1000, 1000);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Course Registration System > SIGN UP");
+		setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		PanelHeader panelHeader = new PanelHeader(role);
+		add(panelHeader);
+
+		JLabel lblHeader = new JLabel("Course Registration System > SIGNUP FOR NEW ACCOUNT");
 		lblHeader.setFont(new Font("Courier New", Font.BOLD, 40));
 		lblHeader.setPreferredSize(new Dimension(1700, 40));
 		lblHeader.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblHeader.setForeground(Color.LIGHT_GRAY);
-		frame.add(lblHeader);
+		add(lblHeader);
 
 		JPanel panelBody = new JPanel();
 		panelBody.setPreferredSize(new Dimension(1500, 500));
@@ -54,7 +59,7 @@ public class SignUpView extends JFrame {
 
 		panelBody.add(panelLeft);
 		panelBody.add(panelRight);
-		frame.add(panelBody);
+		add(panelBody);
 
 		JLabel lblSpace = new JLabel("Account Type:");
 		lblSpace.setPreferredSize(new Dimension(300, 30));
@@ -75,7 +80,11 @@ public class SignUpView extends JFrame {
 		lblSSN.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSSN.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblSSN.setForeground(Color.DARK_GRAY);
-		// lblSSN.setVisible(false);
+		if (role.equals(String.valueOf(Roles.Professor))) {
+			lblSSN.setVisible(true);
+		} else {
+			lblSSN.setVisible(false);
+		}
 		panelLeft.add(lblSSN);
 
 		JLabel lblFirstName = new JLabel("First Name:");
@@ -105,6 +114,18 @@ public class SignUpView extends JFrame {
 		lblDOB.setFont(new Font("Courier New", Font.BOLD, 20));
 		lblDOB.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblDOB);
+
+		JLabel lblEntry = new JLabel("Entry Date:");
+		lblEntry.setPreferredSize(new Dimension(300, 30));
+		lblEntry.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblEntry.setFont(new Font("Courier New", Font.BOLD, 20));
+		lblEntry.setForeground(Color.DARK_GRAY);
+		if (role.equals(String.valueOf(Roles.Student))) {
+			lblEntry.setVisible(true);
+		} else {
+			lblEntry.setVisible(false);
+		}
+		panelLeft.add(lblEntry);
 
 		JLabel lblNationality = new JLabel("Nationality:");
 		lblNationality.setPreferredSize(new Dimension(300, 30));
@@ -139,9 +160,10 @@ public class SignUpView extends JFrame {
 		comboRole.setPreferredSize(new Dimension(220, 30));
 		comboRole.setForeground(Color.DARK_GRAY);
 		comboRole.addItem("");
-		for (Roles role : Roles.values()) {
-			comboRole.addItem(role.toString());
+		for (Roles role1 : Roles.values()) {
+			comboRole.addItem(role1.toString());
 		}
+		comboRole.setSelectedItem(role);
 
 		panelRight.add(comboRole);
 
@@ -155,18 +177,12 @@ public class SignUpView extends JFrame {
 		txtSSN.setPreferredSize(new Dimension(220, 30));
 		txtSSN.setHorizontalAlignment(SwingConstants.LEFT);
 		txtSSN.setFont(new Font("Courier New", Font.BOLD, 20));
-		// txtSSN.setVisible(false);
+		if (role.equals(String.valueOf(Roles.Professor))) {
+			txtSSN.setVisible(true);
+		} else {
+			txtSSN.setVisible(false);
+		}
 		panelRight.add(txtSSN);
-
-		// comboRole.addActionListener(new ActionListener() {
-		//
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// txtSSN.setVisible(true);
-		// lblSSN.setVisible(false);
-		//
-		// }
-		// });
 
 		JTextField txtFirstName = new JTextField();
 		txtFirstName.setPreferredSize(new Dimension(400, 30));
@@ -181,13 +197,6 @@ public class SignUpView extends JFrame {
 		txtLastName.setFont(new Font("Courier New", Font.BOLD, 20));
 		txtLastName.setForeground(Color.DARK_GRAY);
 		panelRight.add(txtLastName);
-
-		// JTextField txtGender = new JTextField();
-		// txtGender.setPreferredSize(new Dimension(220, 30));
-		// txtGender.setHorizontalAlignment(SwingConstants.LEFT);
-		// txtGender.setFont(new Font("Courier New", Font.BOLD, 20));
-		// txtGender.setForeground(Color.DARK_GRAY);
-		// panelRight.add(txtGender);
 
 		JComboBox<String> comboGender = new JComboBox<String>();
 		comboGender.setFont(new Font("Courier New", Font.BOLD, 20));
@@ -213,6 +222,44 @@ public class SignUpView extends JFrame {
 		btnDOB.setFont(new Font("Calibri", Font.BOLD, 20));
 		btnDOB.setForeground(Color.DARK_GRAY);
 		panelRight.add(btnDOB);
+
+		ObservingTextFieldUtility txtEntry = new ObservingTextFieldUtility();
+		txtEntry.setPreferredSize(new Dimension(220, 30));
+		txtEntry.setHorizontalAlignment(SwingConstants.LEFT);
+		txtEntry.setFont(new Font("Courier New", Font.BOLD, 20));
+		txtEntry.setForeground(Color.DARK_GRAY);
+		if (role.equals(String.valueOf(Roles.Student))) {
+			txtEntry.setVisible(true);
+		} else {
+			txtEntry.setVisible(false);
+		}
+		panelRight.add(txtEntry);
+
+		JButton btnEntry = new JButton("Pick Date");
+		btnEntry.setPreferredSize(new Dimension(115, 30));
+		btnEntry.setHorizontalAlignment(SwingConstants.CENTER);
+		btnEntry.setFont(new Font("Calibri", Font.BOLD, 20));
+		btnEntry.setForeground(Color.DARK_GRAY);
+		if (role.equals(String.valueOf(Roles.Student))) {
+			btnEntry.setVisible(true);
+		} else {
+			btnEntry.setVisible(false);
+		}
+		panelRight.add(btnEntry);
+
+		btnEntry.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String lang = null;
+				final Locale locale = getLocale(lang);
+				DatePickerUtility dp = new DatePickerUtility(txtEntry, locale);
+
+				Date selectedDate = dp.parseDate(txtEntry.getText());
+				dp.setSelectedDate(selectedDate);
+				dp.start(txtEntry);
+			}
+		});
 
 		btnDOB.addActionListener(new ActionListener() {
 
@@ -273,12 +320,32 @@ public class SignUpView extends JFrame {
 		btnSignIn.setPreferredSize(new Dimension(305, 30));
 		btnSignIn.setForeground(Color.DARK_GRAY);
 		panelRight.add(btnSignIn);
+		//
+		// JButton btnBack = new JButton("Back");
+		// btnBack.setFont(new Font("Calibri", Font.BOLD, 20));
+		// btnBack.setPreferredSize(new Dimension(305, 30));
+		// btnBack.setForeground(Color.DARK_GRAY);
+		// panelRight.add(btnBack);
+
+		// btnBack.addActionListener(new ActionListener() {
+		//
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// setVisible(false);
+		// try {
+		// new SignUpView();
+		// } catch (SQLException | IOException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
+		// }
+		// });
 
 		btnSignIn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.setVisible(false);
+				setVisible(false);
 				try {
 					new LoginView();
 				} catch (IOException e1) {
@@ -292,7 +359,10 @@ public class SignUpView extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				comboRole.setSelectedIndex(0);
+
+				comboGender.setSelectedIndex(0);
+				txtEntry.setText("");
+				txtSSN.setText("");
 				txtID.setText("");
 				txtFirstName.setText("");
 				txtLastName.setText("");
@@ -301,6 +371,21 @@ public class SignUpView extends JFrame {
 				txtDOB.setText("");
 				txtPassword.setText("");
 				txtConfirmPassword.setText("");
+				txtEmail.setText("");
+			}
+		});
+
+		comboRole.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				try {
+					new SignUpView(comboRole.getSelectedItem().toString());
+				} catch (SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 			}
 		});
@@ -309,17 +394,17 @@ public class SignUpView extends JFrame {
 		 * TEST DATA
 		 */
 
-		txtPassword.setText("newpassword");
-		txtConfirmPassword.setText("newpassword");
-		txtFirstName.setText("Darren");
-		txtLastName.setText("Mc Queen");
-		txtDOB.setText("1988-12-11");
-		txtID.setText("20002");
-		txtNationality.setText("French");
-		txtSSN.setText("8545889");
-		txtEmail.setText("darren.mc.queen@mum.edu");
-		comboGender.setSelectedItem("Male");
-		comboRole.setSelectedItem("Professor");
+		// txtPassword.setText("newpassword");
+		// txtConfirmPassword.setText("newpassword");
+		// txtFirstName.setText("Darren");
+		// txtLastName.setText("Mc Queen");
+		// txtDOB.setText("1988-12-11");
+		// txtID.setText("20002");
+		// txtNationality.setText("French");
+		// txtSSN.setText("8545889");
+		// txtEmail.setText("darren.mc.queen@mum.edu");
+		// comboGender.setSelectedItem("Male");
+		// comboRole.setSelectedItem("Professor");
 
 		btnSubmit.addActionListener(new ActionListener() {
 
@@ -343,8 +428,7 @@ public class SignUpView extends JFrame {
 
 				if (txtFirstName.getText().equals("") || txtLastName.getText().equals("") || txtDOB.getText().equals("")
 						|| txtID.getText().equals("") || txtNationality.getText().equals("")
-						|| comboGender.getSelectedItem().toString().equals("")
-						|| comboRole.getSelectedItem().toString().equals("")) {
+						|| comboGender.getSelectedItem().toString().equals("")) {
 					sbWarnings.append("\nAll fields are required! Please fill up all the fields in the form.");
 					warningCount++;
 				}
@@ -352,7 +436,7 @@ public class SignUpView extends JFrame {
 				if (warningCount > 0) {
 					JOptionPane.showMessageDialog(null, sbWarnings.toString());
 				}
-				String s = comboRole.getSelectedItem().toString();
+				comboRole.getSelectedItem().toString();
 
 				if (comboRole.getSelectedItem().toString().equals(Roles.Professor.toString())) {
 
@@ -379,6 +463,24 @@ public class SignUpView extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					
+					
+					if (isSuccessful) {
+						JOptionPane.showMessageDialog(null,
+								"Welcome! " + txtFirstName.getText() + " You registration is successful!");
+						setVisible(false);
+						try {
+							new ProfessorView(newProfObj);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "You registration is not successful! Please try again!");
+					}
 
 				} else if (comboRole.getSelectedItem().toString().equals(Roles.Student.toString())) {
 
@@ -387,6 +489,12 @@ public class SignUpView extends JFrame {
 					int yearDOB = Integer.parseInt(strDOB.substring(0, 4));
 					int monthDOB = Integer.parseInt(strDOB.substring(5, 7)) - 1;
 					int dayDOB = Integer.parseInt(strDOB.substring(8));
+
+					String strEntry = txtEntry.getText();
+
+					int yearEntry = Integer.parseInt(strEntry.substring(0, 4));
+					int monthEntry = Integer.parseInt(strEntry.substring(5, 7)) - 1;
+					int dayEntry = Integer.parseInt(strEntry.substring(8));
 					
 					newStudentObj = new StudentObject(txtFirstName.getText(), txtLastName.getText(),
 							new GregorianCalendar(yearDOB, monthDOB, dayDOB));
@@ -396,6 +504,7 @@ public class SignUpView extends JFrame {
 					newStudentObj.setEmail(txtEmail.getText());
 					newStudentObj.setID(Integer.parseInt(txtID.getText()));
 					
+					newStudentObj.setEntryDate(new GregorianCalendar(yearEntry, monthEntry, dayEntry));
 
 					StudentController studentController = new StudentController();
 
@@ -405,42 +514,36 @@ public class SignUpView extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-
-				}
-
-				if (isSuccessful) {
-					JOptionPane.showMessageDialog(null,
-							"Welcome! " + txtFirstName.getText() + " You registration is successful!");
-					setVisible(false);
-					try {
-						new ProfessorView(newProfObj);
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					
+					
+					if (isSuccessful) {
+						JOptionPane.showMessageDialog(null,
+								"Welcome! " + txtFirstName.getText() + " You registration is successful!");
+						setVisible(false);
+						try {
+							new StudentView(newStudentObj);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "You registration is not successful! Please try again!");
 					}
-				} else {
-					JOptionPane.showMessageDialog(null, "You registration is not successful! Please try again!");
+
 				}
-				// PersonObject personObj = new StudentObject(txtFirstName,
-				// txtLastName, txtDOB)
-				// StudentObject(txtFirstName.getText(), txtLastName.getText(),
-				// txtDOB.getText(), txtStudentID.getText());
 
-				// StudentController studentController = new
-				// StudentController();
-				// studentController.signUp(personObj);
-
+				
 			}
 		});
 
-		PanelFooter panelFooter = new PanelFooter();
-		frame.add(panelFooter);
+		PanelFooter panelFooter = new PanelFooter(role);
+		add(panelFooter);
 
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.setVisible(true);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setVisible(true);
 
 	}
 
@@ -453,6 +556,8 @@ public class SignUpView extends JFrame {
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws SQLException, IOException {
-		SignUpView studentView = new SignUpView();
+
+		SignUpView studentView = new SignUpView(SignUpView.role);
+
 	}
 }

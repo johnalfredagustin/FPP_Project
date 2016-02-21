@@ -35,7 +35,7 @@ public class LoginView extends JFrame {
 		lblSysName.setForeground(Color.LIGHT_GRAY);
 		panelTopBorder.add(lblSysName, BorderLayout.EAST);
 
-		PanelHeader panelHeader = new PanelHeader();
+		PanelHeader panelHeader = new PanelHeader("");
 		add(panelHeader);
 
 		JPanel panelLeft = new JPanel();
@@ -49,7 +49,7 @@ public class LoginView extends JFrame {
 		add(panelCenter);
 
 		JPanel panelRight = new JPanel();
-		panelRight.setPreferredSize(new Dimension(350, 420));
+		panelRight.setPreferredSize(new Dimension(350, 400));
 		panelRight.setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(panelRight);
 
@@ -82,13 +82,13 @@ public class LoginView extends JFrame {
 
 		panelRight.add(combo);
 
-		JTextField txUserName = new JTextField("984946");
+		JTextField txUserName = new JTextField();
 		txUserName.setFont(new Font("Courier New", Font.BOLD, 20));
 		txUserName.setForeground(Color.DARK_GRAY);
 		txUserName.setPreferredSize(new Dimension(315, 30));
 		panelRight.add(txUserName);
 
-		JPasswordField pfPassword = new JPasswordField("Password");
+		JPasswordField pfPassword = new JPasswordField();
 		pfPassword.setFont(new Font("Courier New", Font.BOLD, 20));
 		pfPassword.setForeground(Color.DARK_GRAY);
 		pfPassword.setPreferredSize(new Dimension(315, 30));
@@ -109,7 +109,7 @@ public class LoginView extends JFrame {
 		panelRight.add(btnLogin);
 		panelRight.add(btnSignUp);
 		
-		PanelFooter panelFooter = new PanelFooter();
+		PanelFooter panelFooter = new PanelFooter("");
 		add(panelFooter);
 		
 		btnSignUp.addActionListener(new ActionListener() {
@@ -136,7 +136,6 @@ public class LoginView extends JFrame {
 					     JOptionPane.showMessageDialog(btnLogin, "Username is not in valid format. Please use your id.");
 					}
 					
-					System.out.println(combo.getSelectedItem());
 					boolean isValidLogin = loginController.isValidLogin(txUserName.getText(), pfPassword.getText(), combo.getSelectedItem().toString());
 					
 					StudentObject studentObject;
@@ -188,7 +187,7 @@ public class LoginView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				try {
-					new SignUpView();
+					new SignUpView("");
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -202,6 +201,8 @@ public class LoginView extends JFrame {
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
+		
 		LoginView loginView = new LoginView();
+		
 	}
 }

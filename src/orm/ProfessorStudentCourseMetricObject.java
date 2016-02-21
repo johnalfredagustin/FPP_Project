@@ -14,8 +14,7 @@ public class ProfessorStudentCourseMetricObject {
 		this.professor = professor;
 		this.course = course;
 	}
-	
-	
+		
 	public CourseObject getCourse() {
 		return course;
 	}

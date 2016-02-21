@@ -6,15 +6,10 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-
 import javax.swing.*;
 
-import controller.ProfessorController;
 import model.Roles;
 import orm.ProfessorObject;
-import orm.ProfessorStudentCourseMetricObject;
 
 @SuppressWarnings("serial")
 public class ProfessorView extends JFrame {
@@ -27,12 +22,13 @@ public class ProfessorView extends JFrame {
 
 		setSize(1700, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Course Registration System > PROFESSOR VIEW");
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		PanelHeader panelHeader = new PanelHeader();
+		PanelHeader panelHeader = new PanelHeader(String.valueOf(Roles.Professor));
 		add(panelHeader);
 
-		JLabel lblHeader = new JLabel("Professor View.");
+		JLabel lblHeader = new JLabel("Course Registration System > PROFESSOR VIEW");
 		lblHeader.setFont(new Font("Courier New", Font.BOLD, 40));
 		lblHeader.setPreferredSize(new Dimension(1700, 40));
 		lblHeader.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -40,22 +36,27 @@ public class ProfessorView extends JFrame {
 		add(lblHeader);
 
 		JPanel panelBody = new JPanel();
-		panelBody.setPreferredSize(new Dimension(1700, 570));
+		panelBody.setPreferredSize(new Dimension(1700, 530));
 		panelBody.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
+		JPanel panelTop = new JPanel();
+		panelTop.setPreferredSize(new Dimension(1700, 30));
+		panelTop.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		JPanel panelLeft = new JPanel();
-		panelLeft.setPreferredSize(new Dimension(800, 500));
+		panelLeft.setPreferredSize(new Dimension(800, 430));
 		panelLeft.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
 		JPanel panelRight = new JPanel();
-		panelRight.setPreferredSize(new Dimension(500, 500));
+		panelRight.setPreferredSize(new Dimension(500, 430));
 		panelRight.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		JPanel panelBodyFooter = new JPanel();
 		panelBodyFooter.setPreferredSize(new Dimension(1700, 100));
 		panelBodyFooter.setLayout(new FlowLayout(FlowLayout.CENTER));
+		((FlowLayout) panelBodyFooter.getLayout()).setHgap(30);
 
-		
+		panelBody.add(panelTop);
 		panelBody.add(panelLeft);
 		panelBody.add(panelRight);
 		panelBody.add(panelBodyFooter);
@@ -76,6 +77,13 @@ public class ProfessorView extends JFrame {
 		lblStudentID.setForeground(Color.DARK_GRAY);
 		panelLeft.add(lblStudentID);
 
+		JLabel lblSSN = new JLabel("SSN:");
+		lblSSN.setPreferredSize(new Dimension(800, 35));
+		lblSSN.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSSN.setFont(new Font("Courier New", Font.BOLD, 20));
+		lblSSN.setForeground(Color.DARK_GRAY);
+		panelLeft.add(lblSSN);
+		
 		JLabel lblFirstName = new JLabel("First Name:");
 		lblFirstName.setPreferredSize(new Dimension(800, 35));
 		lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -126,6 +134,14 @@ public class ProfessorView extends JFrame {
 		lblTextID.setForeground(Color.DARK_GRAY);
 		panelRight.add(lblTextID);
 
+
+		JLabel lblTextSSN = new JLabel(professorObject.getSSN());
+		lblTextSSN.setPreferredSize(new Dimension(400, 35));
+		lblTextSSN.setHorizontalAlignment(SwingConstants.LEFT);
+		lblTextSSN.setFont(new Font("Courier New", Font.BOLD, 20));
+		lblTextSSN.setForeground(Color.DARK_GRAY);
+		panelRight.add(lblTextSSN);
+		
 		JLabel lblTextFirstName = new JLabel(professorObject.getFirstName());
 		lblTextFirstName.setPreferredSize(new Dimension(400, 35));
 		lblTextFirstName.setHorizontalAlignment(SwingConstants.LEFT);
@@ -193,6 +209,20 @@ public class ProfessorView extends JFrame {
 			}
 		});
 		
+		btnRegister.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				try {
+					new ProfessorCourseView(professorObject);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		btnLogout.addActionListener(new ActionListener() {
 			
 			@Override
@@ -207,7 +237,7 @@ public class ProfessorView extends JFrame {
 			}
 		});
 		
-		PanelFooter panelFooter = new PanelFooter();
+		PanelFooter panelFooter = new PanelFooter(String.valueOf(Roles.Professor));
 		add(panelFooter);
 
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -217,9 +247,6 @@ public class ProfessorView extends JFrame {
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws SQLException, IOException {
-
-		ProfessorView.professorObject = new ProfessorObject("FirstName", "LastName", new GregorianCalendar(2011,1,1));
-		ProfessorView.professorObject.setID(10001);
 		
 		ProfessorView profView = new ProfessorView(ProfessorView.professorObject);
 	}
